@@ -1,4 +1,4 @@
-const CACHE = 'foco-v1';
+const CACHE = 'repmax-v3';
 const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg'];
 
 self.addEventListener('install', (event) => {
@@ -25,6 +25,10 @@ self.addEventListener('fetch', (event) => {
     !event.request.url.startsWith(self.location.origin)
   )
     return;
+  if (event.request.mode === 'navigate') {
+    event.respondWith(fetch(event.request).catch(() => caches.match('/')));
+    return;
+  }
   event.respondWith(
     fetch(event.request)
       .then((response) => {
