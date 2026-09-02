@@ -12,9 +12,9 @@ import {
   Dumbbell,
   Flame,
   Home,
+  LogOut,
   Play,
   Plus,
-  Settings,
   Sparkles,
   Target,
   TimerReset,
@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useWorkoutHistory } from '@/hooks/use-workout-history';
+import { useGoogleAuth } from '@/hooks/use-google-auth';
 
 const exercises = [
   { name: 'Supino inclinado', detail: '4 séries · 10 repetições' },
@@ -45,7 +46,8 @@ export default function HomePage() {
   const [completed, setCompleted] = useState(1);
   const [started, setStarted] = useState(false);
   const [saved, setSaved] = useState(false);
-  const { status, summary, save } = useWorkoutHistory();
+  const auth = useGoogleAuth();
+  const { status, summary, save } = useWorkoutHistory(Boolean(auth.user));
   const progress = useMemo(
     () => (completed / exercises.length) * 100,
     [completed],
@@ -60,6 +62,11 @@ export default function HomePage() {
     });
     setSaved(success);
   }
+
+  if (!auth.configured) return <FirebaseSetup />;
+  if (auth.loading) return <LoadingScreen />;
+  if (!auth.user)
+    return <LoginScreen error={auth.error} onLogin={auth.login} />;
 
   return (
     <main className="min-h-dvh bg-background pb-28 text-foreground">
@@ -89,12 +96,13 @@ export default function HomePage() {
                     : 'Modo demonstração'}
             </span>
             <Button
-              aria-label="Abrir configurações"
+              aria-label="Sair da conta Google"
               variant="ghost"
               size="icon-lg"
               className="rounded-full bg-card ring-1 ring-border"
+              onClick={auth.logout}
             >
-              <Settings />
+              <LogOut />
             </Button>
           </div>
         </header>
@@ -315,6 +323,78 @@ export default function HomePage() {
         <NavItem icon={<Activity />} label="Progresso" />
         <NavItem icon={<Target />} label="Metas" />
       </nav>
+    </main>
+  );
+}
+
+function LoginScreen({
+  error,
+  onLogin,
+}: {
+  error: string;
+  onLogin: () => void;
+}) {
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-background px-5 text-foreground">
+      <section className="w-full max-w-sm rounded-[2rem] bg-card p-7 text-center ring-1 ring-border sm:p-9">
+        <div className="mx-auto flex size-20 items-center justify-center rounded-[1.75rem] bg-primary/10 text-primary ring-1 ring-primary/20">
+          <Dumbbell className="size-10" strokeWidth={1.5} />
+        </div>
+        <p className="mt-6 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+          Foco
+        </p>
+        <h1 className="mt-2 text-3xl font-bold tracking-tight">
+          Seu treino continua aqui.
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+          Entre para manter cargas, histórico e evolução sincronizados em todos
+          os seus aparelhos.
+        </p>
+        <Button
+          className="mt-7 h-12 w-full rounded-2xl bg-white font-bold text-[#17202a] hover:bg-white/90"
+          onClick={onLogin}
+        >
+          <span className="flex size-6 items-center justify-center rounded-full bg-[#4285f4] text-xs font-black text-white">
+            G
+          </span>
+          Continuar com Google
+        </Button>
+        {error && (
+          <p role="alert" className="mt-4 text-sm text-coral">
+            {error}
+          </p>
+        )}
+        <p className="mt-5 text-xs leading-5 text-muted-foreground">
+          Uso pessoal. Seus treinos ficam vinculados à conta escolhida.
+        </p>
+      </section>
+    </main>
+  );
+}
+
+function LoadingScreen() {
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-background text-foreground">
+      <div className="text-center">
+        <Dumbbell className="mx-auto size-10 animate-pulse text-primary" />
+        <p className="mt-4 text-sm text-muted-foreground">
+          Preparando seus treinos…
+        </p>
+      </div>
+    </main>
+  );
+}
+
+function FirebaseSetup() {
+  return (
+    <main className="flex min-h-dvh items-center justify-center bg-background px-5 text-foreground">
+      <section className="max-w-md rounded-3xl bg-card p-7 text-center ring-1 ring-border">
+        <CloudOff className="mx-auto size-9 text-coral" />
+        <h1 className="mt-4 text-2xl font-bold">Firebase não configurado</h1>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Adicione as variáveis do arquivo .env.example e reinicie o aplicativo.
+        </p>
+      </section>
     </main>
   );
 }

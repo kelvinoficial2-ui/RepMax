@@ -18,7 +18,7 @@ Abra `http://localhost:3000`.
 1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
 2. Adicione um aplicativo Web ao projeto.
 3. Ative o **Cloud Firestore**.
-4. Em **Authentication > Sign-in method**, ative o provedor **Anonymous**.
+4. Em **Authentication > Sign-in method**, ative o provedor **Google** e escolha um e-mail de suporte.
 5. Copie `.env.example` para `.env.local` e preencha os valores fornecidos pelo Firebase.
 6. Publique as regras de `firestore.rules` pelo console ou pela Firebase CLI.
 

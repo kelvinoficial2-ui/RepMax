@@ -8,14 +8,14 @@ import {
   type WorkoutSession,
 } from '@/lib/firebase';
 
-export function useWorkoutHistory() {
+export function useWorkoutHistory(enabled = true) {
   const [sessions, setSessions] = useState<WorkoutSession[]>([]);
   const [status, setStatus] = useState<
     'demo' | 'connecting' | 'synced' | 'saving' | 'error'
   >(isFirebaseConfigured ? 'connecting' : 'demo');
 
   useEffect(() => {
-    if (!isFirebaseConfigured) return;
+    if (!isFirebaseConfigured || !enabled) return;
     let unsubscribe: (() => void) | undefined;
     subscribeWorkoutSessions(
       (items) => {
@@ -29,7 +29,7 @@ export function useWorkoutHistory() {
       })
       .catch(() => setStatus('error'));
     return () => unsubscribe?.();
-  }, []);
+  }, [enabled]);
 
   const save = useCallback(async (session: WorkoutSession) => {
     if (!isFirebaseConfigured) return false;

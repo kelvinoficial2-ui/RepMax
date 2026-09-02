@@ -1,8 +1,14 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import {
+  browserLocalPersistence,
   getAuth,
+  getRedirectResult,
+  GoogleAuthProvider,
   onAuthStateChanged,
-  signInAnonymously,
+  setPersistence,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
   type User,
 } from 'firebase/auth';
 import {
@@ -43,30 +49,44 @@ function app(): FirebaseApp {
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
 }
 
-async function currentUser(): Promise<User> {
+export function observeUser(receive: (user: User | null) => void) {
   const auth = getAuth(app());
-  if (auth.currentUser) return auth.currentUser;
-  return new Promise((resolve, reject) => {
-    const stop = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        stop();
-        resolve(user);
-        return;
-      }
-      try {
-        const credential = await signInAnonymously(auth);
-        stop();
-        resolve(credential.user);
-      } catch (error) {
-        stop();
-        reject(error);
-      }
-    });
-  });
+  void getRedirectResult(auth).catch(() => undefined);
+  return onAuthStateChanged(auth, receive);
+}
+
+export async function signInWithGoogle() {
+  const auth = getAuth(app());
+  await setPersistence(auth, browserLocalPersistence);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    const code = (error as { code?: string }).code;
+    if (
+      code === 'auth/popup-blocked' ||
+      code === 'auth/cancelled-popup-request'
+    ) {
+      await signInWithRedirect(auth, provider);
+      return;
+    }
+    throw error;
+  }
+}
+
+export async function signOutGoogle() {
+  await signOut(getAuth(app()));
+}
+
+function currentUser(): User {
+  const user = getAuth(app()).currentUser;
+  if (!user) throw new Error('Entre com sua conta Google.');
+  return user;
 }
 
 export async function saveWorkoutSession(session: WorkoutSession) {
-  const user = await currentUser();
+  const user = currentUser();
   const db = getFirestore(app());
   await addDoc(collection(db, 'users', user.uid, 'workoutSessions'), {
     ...session,
@@ -78,7 +98,7 @@ export async function subscribeWorkoutSessions(
   receive: (sessions: WorkoutSession[]) => void,
   fail: (error: Error) => void,
 ): Promise<Unsubscribe> {
-  const user = await currentUser();
+  const user = currentUser();
   const db = getFirestore(app());
   const sessions = query(
     collection(db, 'users', user.uid, 'workoutSessions'),
