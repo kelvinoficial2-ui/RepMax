@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-coral: var(--coral);
+  --font-sans: var(--font-geist-sans);
+  --font-heading: var(--font-geist-sans);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.7);
+  --radius-3xl: calc(var(--radius) * 2.15);
+}
+
+:root,
+.dark {
+  --background: #091214;
+  --foreground: #f2f7f6;
+  --card: #111d20;
+  --card-foreground: #f2f7f6;
+  --primary: #26d7c6;
+  --primary-foreground: #032521;
+  --secondary: #17272a;
+  --secondary-foreground: #e8f1ef;
+  --muted: #17272a;
+  --muted-foreground: #899a9c;
+  --border: rgb(157 202 198 / 12%);
+  --input: rgb(157 202 198 / 16%);
+  --ring: #26d7c6;
+  --coral: #ff7466;
+  --radius: 0.9rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    color-scheme: dark;
+    background: var(--background);
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-width: 320px;
+    background-image:
+      radial-gradient(
+        circle at 92% 0%,
+        rgb(38 215 198 / 8%),
+        transparent 25rem
+      ),
+      linear-gradient(180deg, #0b1517 0%, #091214 55%);
+  }
+  button {
+    cursor: pointer;
+  }
+}
