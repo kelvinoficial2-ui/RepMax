@@ -2,7 +2,6 @@ import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import {
   browserLocalPersistence,
   getAuth,
-  getRedirectResult,
   GoogleAuthProvider,
   onAuthStateChanged,
   setPersistence,
@@ -51,8 +50,7 @@ function app(): FirebaseApp {
 
 export function observeUser(receive: (user: User | null) => void) {
   const auth = getAuth(app());
-  void getRedirectResult(auth).catch(() => undefined);
-  return onAuthStateChanged(auth, receive);
+  return onAuthStateChanged(auth, receive, () => receive(null));
 }
 
 export async function signInWithGoogle() {

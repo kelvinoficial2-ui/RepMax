@@ -16,10 +16,27 @@ export function useGoogleAuth() {
 
   useEffect(() => {
     if (!isFirebaseConfigured) return;
-    return observeUser((nextUser) => {
-      setUser(nextUser);
+    const timeout = window.setTimeout(() => {
+      setError('A conexão demorou mais que o esperado. Entre novamente.');
       setLoading(false);
-    });
+    }, 8000);
+    try {
+      const stop = observeUser((nextUser) => {
+        window.clearTimeout(timeout);
+        setUser(nextUser);
+        setLoading(false);
+      });
+      return () => {
+        window.clearTimeout(timeout);
+        stop();
+      };
+    } catch {
+      window.clearTimeout(timeout);
+      window.setTimeout(() => {
+        setError('Não foi possível iniciar o login. Verifique o Firebase.');
+        setLoading(false);
+      }, 0);
+    }
   }, []);
 
   const login = useCallback(async () => {
