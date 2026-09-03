@@ -1,5 +1,5 @@
-const CACHE = 'repmax-v3';
-const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg'];
+const CACHE = 'repmax-v4';
+const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
