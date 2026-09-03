@@ -45,6 +45,11 @@ export const measureFields = [
   ['calf', 'Panturrilha', 'cm'],
 ] as const;
 export const initialExercises: Exercise[] = [
+  {
+    id: 'supino-reto-halteres',
+    name: 'Supino reto com halteres',
+    equipment: 'Halteres',
+  },
   { id: 'supino-inclinado', name: 'Supino inclinado', equipment: 'Halteres' },
   { id: 'crucifixo', name: 'Crucifixo', equipment: 'Halteres' },
   { id: 'triceps-polia', name: 'Tríceps na polia', equipment: 'Polia' },

@@ -2,6 +2,7 @@ import { useState, type SyntheticEvent, type ReactNode } from 'react';
 import { Activity, Dumbbell, LogOut, Ruler, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { ExerciseDemonstration } from '@/components/exercise-demonstration';
 import { useTracking } from '@/hooks/use-tracking';
 import { useWorkoutHistory } from '@/hooks/use-workout-history';
 import { saveTracking } from '@/lib/firebase';
@@ -566,15 +567,18 @@ function LoadForm({
     <>
       <Panel>
         <h2 className="text-xl font-bold">{exercise.name}</h2>
-        <details className="my-4 rounded-2xl bg-secondary p-4">
-          <summary className="cursor-pointer text-sm text-primary">
-            Demonstração do exercício
-          </summary>
-          <p className="mt-3 text-sm text-muted-foreground">
-            O boneco animado ainda não está disponível. Aguardando o arquivo de
-            referência para preparar a demonstração deste exercício.
-          </p>
-        </details>
+        {exercise.id === 'supino-reto-halteres' ? (
+          <ExerciseDemonstration />
+        ) : (
+          <details className="my-4 rounded-2xl bg-secondary p-4">
+            <summary className="cursor-pointer text-sm text-primary">
+              Demonstração do exercício
+            </summary>
+            <p className="mt-3 text-sm text-muted-foreground">
+              A demonstração deste exercício ainda não está disponível.
+            </p>
+          </details>
+        )}
         <form key={id} onSubmit={submit} className="space-y-4">
           <h3 className="font-semibold">
             {editing ? 'Corrigir registro' : 'Registrar carga utilizada'}
