@@ -1,4 +1,4 @@
-const CACHE = 'repmax-v4';
+const CACHE = 'repmax-v5';
 const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -12,7 +12,7 @@ self.addEventListener('activate', (event) => {
       .keys()
       .then((keys) =>
         Promise.all(
-          keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)),
+          keys.filter((key) => key.startsWith('repmax-') && key !== CACHE).map((key) => caches.delete(key)),
         ),
       ),
   );
@@ -20,9 +20,11 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
   if (
     event.request.method !== 'GET' ||
-    !event.request.url.startsWith(self.location.origin)
+    url.origin !== self.location.origin ||
+    url.pathname.startsWith('/__/')
   )
     return;
   if (event.request.mode === 'navigate') {

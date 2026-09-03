@@ -1,12 +1,9 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import {
-  browserLocalPersistence,
   getAuth,
   GoogleAuthProvider,
   onAuthStateChanged,
-  setPersistence,
   signInWithPopup,
-  signInWithRedirect,
   signOut,
   type User,
 } from 'firebase/auth';
@@ -55,32 +52,12 @@ export function observeUser(receive: (user: User | null) => void) {
 
 export async function signInWithGoogle() {
   const auth = getAuth(app());
-  await setPersistence(auth, browserLocalPersistence);
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({ prompt: 'select_account' });
-  const navigatorWithStandalone = window.navigator as Navigator & {
-    standalone?: boolean;
-  };
-  const isInstalledApp =
-    window.matchMedia('(display-mode: standalone)').matches ||
-    navigatorWithStandalone.standalone === true;
-  if (isInstalledApp) {
-    await signInWithRedirect(auth, provider);
-    return;
-  }
-  try {
-    await signInWithPopup(auth, provider);
-  } catch (error) {
-    const code = (error as { code?: string }).code;
-    if (
-      code === 'auth/popup-blocked' ||
-      code === 'auth/cancelled-popup-request'
-    ) {
-      await signInWithRedirect(auth, provider);
-      return;
-    }
-    throw error;
-  }
+  // Keep popup creation inside the click gesture. getAuth defaults to local
+  // persistence; awaiting setPersistence here can lose popup permission on iOS.
+  // Do not fall back to redirect, which can lose state in partitioned storage.
+  return signInWithPopup(auth, provider);
 }
 
 export async function signOutGoogle() {
