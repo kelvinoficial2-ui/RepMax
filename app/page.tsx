@@ -24,6 +24,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useWorkoutHistory } from '@/hooks/use-workout-history';
 import { useGoogleAuth } from '@/hooks/use-google-auth';
+import { APP_RELEASE } from '@/lib/app-origin.mjs';
 
 const exercises = [
   { name: 'Supino inclinado', detail: '4 séries · 10 repetições' },
@@ -66,7 +67,7 @@ export default function HomePage() {
   if (!auth.configured) return <FirebaseSetup />;
   if (auth.loading) return <LoadingScreen />;
   if (!auth.user)
-    return <LoginScreen error={auth.error} onLogin={auth.login} />;
+    return <LoginScreen error={auth.error} onLogin={auth.login} busy={auth.signingIn} />;
 
   return (
     <main className="min-h-dvh bg-background pb-28 text-foreground">
@@ -330,9 +331,11 @@ export default function HomePage() {
 function LoginScreen({
   error,
   onLogin,
+  busy,
 }: {
   error: string;
   onLogin: () => void;
+  busy: boolean;
 }) {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-background px-5 text-foreground">
@@ -353,11 +356,12 @@ function LoginScreen({
         <Button
           className="mt-7 h-12 w-full rounded-2xl bg-white font-bold text-[#17202a] hover:bg-white/90"
           onClick={onLogin}
+          disabled={busy}
         >
           <span className="flex size-6 items-center justify-center rounded-full bg-[#4285f4] text-xs font-black text-white">
             G
           </span>
-          Continuar com Google
+          {busy ? 'Aguardando o Google…' : 'Continuar com Google'}
         </Button>
         {error && (
           <p role="alert" className="mt-4 text-sm text-coral">
@@ -367,6 +371,7 @@ function LoginScreen({
         <p className="mt-5 text-xs leading-5 text-muted-foreground">
           Uso pessoal. Seus treinos ficam vinculados à conta escolhida.
         </p>
+        <p className="mt-3 text-xs text-muted-foreground">Versão {APP_RELEASE}</p>
       </section>
     </main>
   );

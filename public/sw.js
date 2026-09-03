@@ -1,4 +1,4 @@
-const CACHE = 'repmax-v5';
+const CACHE = 'repmax-v6';
 const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
@@ -28,20 +28,28 @@ self.addEventListener('fetch', (event) => {
   )
     return;
   if (event.request.mode === 'navigate') {
-    event.respondWith(fetch(event.request).catch(() => caches.match('/')));
+    event.respondWith(fetch(event.request).then((response) => {
+      if (response.ok && !response.redirected && response.headers.get('content-type')?.includes('text/html')) {
+        const copy = response.clone();
+        event.waitUntil(caches.open(CACHE).then((cache) => cache.put('/', copy)));
+      }
+      return response;
+    }).catch(() => caches.match('/')));
     return;
   }
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        const copy = response.clone();
-        void caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+        if (response.ok && !response.redirected && !response.headers.get('content-type')?.includes('text/html')) {
+          const copy = response.clone();
+          event.waitUntil(caches.open(CACHE).then((cache) => cache.put(event.request, copy)));
+        }
         return response;
       })
       .catch(() =>
         caches
           .match(event.request)
-          .then((cached) => cached || caches.match('/')),
+          .then((cached) => cached || Response.error()),
       ),
   );
 });

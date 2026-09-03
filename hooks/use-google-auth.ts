@@ -13,6 +13,7 @@ export function useGoogleAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(isFirebaseConfigured);
   const [error, setError] = useState('');
+  const [signingIn, setSigningIn] = useState(false);
 
   useEffect(() => {
     if (!isFirebaseConfigured) return;
@@ -26,6 +27,10 @@ export function useGoogleAuth() {
         setUser(nextUser);
         if (nextUser) setError('');
         setLoading(false);
+      }, (error) => {
+        window.clearTimeout(timeout);
+        setLoading(false);
+        setError(`Não foi possível recuperar sua sessão. ${error.message}`);
       });
       return () => {
         window.clearTimeout(timeout);
@@ -42,7 +47,7 @@ export function useGoogleAuth() {
 
   const login = useCallback(async () => {
     setError('');
-    setLoading(true);
+    setSigningIn(true);
     try {
       const result = await signInWithGoogle();
       setUser(result.user);
@@ -54,11 +59,11 @@ export function useGoogleAuth() {
         'auth/cancelled-popup-request': 'O login foi interrompido. Tente novamente com apenas uma janela de login aberta.',
         'auth/network-request-failed': 'Não foi possível conectar ao Google. Verifique sua conexão.',
         'auth/web-storage-unsupported': 'O navegador está bloqueando o armazenamento necessário para entrar. Abra fora da navegação privada.',
-        'auth/unauthorized-domain': 'Este endereço não está autorizado no Firebase. Abra repmax-c5c87.web.app.',
+        'auth/unauthorized-domain': 'Este endereço não está autorizado no Firebase. Abra repmax-c5c87.firebaseapp.com.',
       };
       setError(messages[code || ''] || `Não foi possível entrar com o Google. Tente novamente.${code ? ` (${code})` : ''}`);
     } finally {
-      setLoading(false);
+      setSigningIn(false);
     }
   }, []);
 
@@ -69,6 +74,7 @@ export function useGoogleAuth() {
   return {
     user,
     loading,
+    signingIn,
     error,
     login,
     logout,

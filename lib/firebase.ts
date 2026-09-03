@@ -45,9 +45,12 @@ function app(): FirebaseApp {
   return getApps().length ? getApp() : initializeApp(firebaseConfig);
 }
 
-export function observeUser(receive: (user: User | null) => void) {
+export function observeUser(
+  receive: (user: User | null) => void,
+  fail: (error: Error) => void,
+) {
   const auth = getAuth(app());
-  return onAuthStateChanged(auth, receive, () => receive(null));
+  return onAuthStateChanged(auth, receive, fail);
 }
 
 export async function signInWithGoogle() {
