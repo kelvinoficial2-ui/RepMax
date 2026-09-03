@@ -9,6 +9,8 @@ import {
 } from 'firebase/auth';
 import {
   addDoc,
+  doc,
+  setDoc,
   collection,
   getFirestore,
   limit,
@@ -18,6 +20,42 @@ import {
   serverTimestamp,
   type Unsubscribe,
 } from 'firebase/firestore';
+import type { Measurement, LoadEntry, Exercise } from './tracking';
+
+type TrackingCollections = {
+  bodyMeasurements: Measurement;
+  loadEntries: LoadEntry;
+  exercises: Exercise;
+};
+export function subscribeTracking<K extends keyof TrackingCollections>(
+  name: K,
+  receive: (items: TrackingCollections[K][]) => void,
+  fail: (error: Error) => void,
+) {
+  const uid = currentUser().uid;
+  return onSnapshot(
+    collection(getFirestore(app()), 'users', uid, name),
+    (snapshot) => {
+      receive(
+        snapshot.docs.map(
+          (item) => ({ ...item.data(), id: item.id }) as TrackingCollections[K],
+        ),
+      );
+    },
+    fail,
+  );
+}
+export async function saveTracking<K extends keyof TrackingCollections>(
+  name: K,
+  value: TrackingCollections[K],
+) {
+  const uid = currentUser().uid;
+  // Stable IDs make retries overwrite the same record, rather than duplicate it.
+  await setDoc(doc(getFirestore(app()), 'users', uid, name, value.id), {
+    ...value,
+    updatedAt: serverTimestamp(),
+  });
+}
 
 export type WorkoutSession = {
   id?: string;

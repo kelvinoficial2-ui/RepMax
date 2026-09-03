@@ -16,6 +16,7 @@ export function useWorkoutHistory(enabled = true) {
 
   useEffect(() => {
     if (!isFirebaseConfigured || !enabled) return;
+    let cancelled = false;
     let unsubscribe: (() => void) | undefined;
     subscribeWorkoutSessions(
       (items) => {
@@ -25,10 +26,14 @@ export function useWorkoutHistory(enabled = true) {
       () => setStatus('error'),
     )
       .then((stop) => {
-        unsubscribe = stop;
+        if (cancelled) stop();
+        else unsubscribe = stop;
       })
       .catch(() => setStatus('error'));
-    return () => unsubscribe?.();
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, [enabled]);
 
   const save = useCallback(async (session: WorkoutSession) => {
@@ -46,10 +51,11 @@ export function useWorkoutHistory(enabled = true) {
 
   const summary = useMemo(
     () => ({
-      workouts: sessions.length || 12,
-      minutes:
-        sessions.reduce((total, item) => total + item.durationMinutes, 0) ||
-        540,
+      workouts: sessions.length,
+      minutes: sessions.reduce(
+        (total, item) => total + item.durationMinutes,
+        0,
+      ),
     }),
     [sessions],
   );

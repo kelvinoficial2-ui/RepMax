@@ -28,6 +28,7 @@
 
 :root,
 .dark {
+  --font-geist-sans: Arial, Helvetica, sans-serif;
   --background: #091214;
   --foreground: #f2f7f6;
   --card: #111d20;
