@@ -41,23 +41,74 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
         512,
         512,
       );
-      if (!animation.movingWeight || frame.progress <= 0) return;
-      const weight = animation.movingWeight;
       const scale = 512 / frame.size;
-      const lift = weight.maxLift * frame.progress;
-      context.drawImage(
-        sprite,
-        frame.x + weight.x,
-        frame.y + weight.y,
-        weight.width,
-        weight.height,
-        weight.x * scale,
-        (weight.y - lift) * scale,
-        weight.width * scale,
-        weight.height * scale,
-      );
+      if (animation.movingWeight && frame.progress > 0) {
+        const weight = animation.movingWeight;
+        const lift = weight.maxLift * frame.progress;
+        context.drawImage(
+          sprite,
+          frame.x + weight.x,
+          frame.y + weight.y,
+          weight.width,
+          weight.height,
+          weight.x * scale,
+          (weight.y - lift) * scale,
+          weight.width * scale,
+          weight.height * scale,
+        );
+      }
+      const stacks = animation.synchronizedWeightStacks;
+      if (!stacks) return;
+      const lift = stacks.maxLift * frame.progress;
+      for (const position of stacks.positions) {
+        const left = position.maskX * scale;
+        const top = stacks.maskTop * scale;
+        const width = position.maskWidth * scale;
+        const height = stacks.maskHeight * scale;
+        context.fillStyle = '#071b24';
+        context.fillRect(left, top, width, height);
+
+        context.strokeStyle = '#809094';
+        context.lineWidth = Math.max(1, scale);
+        for (const ratio of [0.3, 0.7]) {
+          context.beginPath();
+          context.moveTo(
+            (position.maskX + position.maskWidth * ratio) * scale,
+            top,
+          );
+          context.lineTo(
+            (position.maskX + position.maskWidth * ratio) * scale,
+            (stacks.baseBottom + 2) * scale,
+          );
+          context.stroke();
+        }
+
+        const stackLeft = position.stackX * scale;
+        const stackTop =
+          (stacks.baseBottom - stacks.stackHeight - lift) * scale;
+        const stackWidth = stacks.stackWidth * scale;
+        const plateHeight = 5 * scale;
+        const gap = 1.2 * scale;
+        for (
+          let plateTop = stackTop;
+          plateTop < stackTop + stacks.stackHeight * scale;
+          plateTop += plateHeight + gap
+        ) {
+          context.fillStyle = '#111719';
+          context.fillRect(stackLeft, plateTop, stackWidth, plateHeight);
+          context.strokeStyle = '#354247';
+          context.strokeRect(stackLeft, plateTop, stackWidth, plateHeight);
+        }
+        context.fillStyle = '#29d8ca';
+        context.fillRect(
+          stackLeft + stackWidth * 0.58,
+          stackTop + plateHeight * 2.2,
+          3 * scale,
+          2 * scale,
+        );
+      }
     },
-    [animation.movingWeight, exerciseId],
+    [animation.movingWeight, animation.synchronizedWeightStacks, exerciseId],
   );
 
   useEffect(() => {

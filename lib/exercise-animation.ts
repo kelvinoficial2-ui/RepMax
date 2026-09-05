@@ -10,6 +10,19 @@ type ExerciseAnimation = {
     height: number;
     maxLift: number;
   };
+  synchronizedWeightStacks?: {
+    positions: {
+      maskX: number;
+      maskWidth: number;
+      stackX: number;
+    }[];
+    maskTop: number;
+    maskHeight: number;
+    stackWidth: number;
+    stackHeight: number;
+    baseBottom: number;
+    maxLift: number;
+  };
 };
 
 const animations: Record<string, ExerciseAnimation> = {
@@ -38,6 +51,18 @@ const animations: Record<string, ExerciseAnimation> = {
     cellSize: 362,
     columns: 4,
     upwardPoses: [0, 1, 2, 3, 4],
+    synchronizedWeightStacks: {
+      positions: [
+        { maskX: 69, maskWidth: 30, stackX: 72 },
+        { maskX: 265, maskWidth: 42, stackX: 283 },
+      ],
+      maskTop: 138,
+      maskHeight: 150,
+      stackWidth: 24,
+      stackHeight: 50,
+      baseBottom: 282,
+      maxLift: 62,
+    },
   },
 };
 
