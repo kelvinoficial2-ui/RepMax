@@ -34,7 +34,7 @@ const animations: Record<string, ExerciseAnimation> = {
     movingWeight: { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
   },
   'crucifixo-polia-alta': {
-    src: '/exercises/crucifixo-polia-alta-v1.jpg',
+    src: '/exercises/crucifixo-polia-alta-v2.jpg',
     cellSize: 362,
     columns: 4,
     upwardPoses: [0, 1, 2, 3, 4],

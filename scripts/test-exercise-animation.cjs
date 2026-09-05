@@ -43,6 +43,10 @@ assert.equal(
   animation.exerciseAnimation('abdominal-polia-alta-em-pe').src,
   '/exercises/abdominal-polia-alta-em-pe-v2.jpg',
 );
+assert.equal(
+  animation.exerciseAnimation('crucifixo-polia-alta').src,
+  '/exercises/crucifixo-polia-alta-v2.jpg',
+);
 const movingWeight = animation.exerciseAnimation(
   'abdominal-polia-alta-em-pe',
 ).movingWeight;
