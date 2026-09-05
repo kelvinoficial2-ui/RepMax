@@ -45,18 +45,12 @@ assert.equal(
 );
 assert.equal(
   animation.exerciseAnimation('crucifixo-polia-alta').src,
-  '/exercises/crucifixo-polia-alta-v2.jpg',
+  '/exercises/crucifixo-polia-alta-v3.jpg',
 );
 const crossoverStacks = animation.exerciseAnimation(
   'crucifixo-polia-alta',
 ).synchronizedWeightStacks;
-assert.equal(
-  JSON.stringify(crossoverStacks.positions),
-  JSON.stringify([
-    { maskX: 69, maskWidth: 30, stackX: 72 },
-    { maskX: 265, maskWidth: 42, stackX: 283 },
-  ]),
-);
+assert.deepEqual([...crossoverStacks.x], [72, 283]);
 assert.equal(crossoverStacks.maxLift, 62);
 const movingWeight = animation.exerciseAnimation(
   'abdominal-polia-alta-em-pe',

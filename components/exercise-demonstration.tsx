@@ -60,30 +60,8 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
       const stacks = animation.synchronizedWeightStacks;
       if (!stacks) return;
       const lift = stacks.maxLift * frame.progress;
-      for (const position of stacks.positions) {
-        const left = position.maskX * scale;
-        const top = stacks.maskTop * scale;
-        const width = position.maskWidth * scale;
-        const height = stacks.maskHeight * scale;
-        context.fillStyle = '#071b24';
-        context.fillRect(left, top, width, height);
-
-        context.strokeStyle = '#809094';
-        context.lineWidth = Math.max(1, scale);
-        for (const ratio of [0.3, 0.7]) {
-          context.beginPath();
-          context.moveTo(
-            (position.maskX + position.maskWidth * ratio) * scale,
-            top,
-          );
-          context.lineTo(
-            (position.maskX + position.maskWidth * ratio) * scale,
-            (stacks.baseBottom + 2) * scale,
-          );
-          context.stroke();
-        }
-
-        const stackLeft = position.stackX * scale;
+      for (const x of stacks.x) {
+        const stackLeft = x * scale;
         const stackTop =
           (stacks.baseBottom - stacks.stackHeight - lift) * scale;
         const stackWidth = stacks.stackWidth * scale;
