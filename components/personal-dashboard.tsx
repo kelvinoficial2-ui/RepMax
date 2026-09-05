@@ -96,7 +96,7 @@ export function PersonalDashboard({
   const [tab, setTab] = useState('treinos');
   const [logoutError, setLogoutError] = useState('');
   return (
-    <main className="mx-auto min-h-dvh max-w-4xl px-4 pb-32 pt-7 text-foreground">
+    <main className="mx-auto min-h-dvh max-w-4xl px-4 pb-32 pt-[calc(env(safe-area-inset-top)+1.75rem)] text-foreground">
       <header className="mb-7 flex items-center justify-between gap-4">
         <div>
           <p className="flex items-center gap-2 font-bold text-primary">
