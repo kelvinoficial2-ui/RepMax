@@ -21,6 +21,7 @@ assert.equal(animation.EXERCISE_FRAME_MS, 125);
 for (const [id, width, height, poseCount] of [
   ['supino-reto-halteres', 1448, 1086, 8],
   ['rosca-concentrada-halteres', 1672, 1254, 12],
+  ['abdominal-polia-alta-em-pe', 1448, 1086, 12],
 ]) {
   const definition = animation.exerciseAnimation(id);
   assert(definition);
@@ -51,6 +52,11 @@ assert.equal(
     .category,
   'Bíceps',
 );
+const abdominal = tracking.initialExercises.find(
+  (e) => e.id === 'abdominal-polia-alta-em-pe',
+);
+assert.equal(abdominal.category, 'Abdômen');
+assert.equal(abdominal.equipment, 'Polia alta com corda');
 assert.equal(
   new Set(tracking.initialExercises.map((e) => e.id)).size,
   tracking.initialExercises.length,

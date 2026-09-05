@@ -18,6 +18,12 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 4,
     upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   },
+  'abdominal-polia-alta-em-pe': {
+    src: '/exercises/abdominal-polia-alta-em-pe-v1.jpg',
+    cellSize: 362,
+    columns: 4,
+    upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  },
 };
 
 export const EXERCISE_FRAME_MS = 125;
