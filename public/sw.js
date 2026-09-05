@@ -1,4 +1,4 @@
-const CACHE = 'repmax-v8';
+const CACHE = 'repmax-v9';
 const APP_SHELL = ['/', '/manifest.webmanifest', '/favicon.svg', '/apple-touch-icon.png', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
