@@ -9,6 +9,7 @@ import { saveTracking } from '@/lib/firebase';
 import { APP_RELEASE } from '@/lib/app-origin.mjs';
 import {
   bases,
+  exerciseCategories,
   inputText,
   measureFields,
   localDate,
@@ -19,7 +20,9 @@ import {
   type Measurement,
   type LoadEntry,
   type Exercise,
+  type ExerciseCategory,
 } from '@/lib/tracking';
+import { exerciseAnimation } from '@/lib/exercise-animation';
 
 const number = (value: number) =>
   value.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
@@ -352,6 +355,7 @@ function Training({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [exerciseId, setExerciseId] = useState(newId);
+  const [category, setCategory] = useState<ExerciseCategory | 'Todos'>('Todos');
   const exercise =
     exercises.find((item) => item.id === selected) || exercises[0];
   async function finish() {
@@ -387,15 +391,26 @@ function Training({
     const form = values(event);
     setError('');
     const name = inputText(form.name).trim(),
-      equipment = inputText(form.equipment).trim();
+      equipment = inputText(form.equipment).trim(),
+      exerciseCategory = inputText(form.category) as ExerciseCategory;
     if (!name || name.length > 80 || !equipment || equipment.length > 80) {
       setError('Informe nome e equipamento, com até 80 caracteres cada.');
       return;
     }
+    if (!exerciseCategories.includes(exerciseCategory)) {
+      setError('Escolha uma categoria válida.');
+      return;
+    }
     setBusy(true);
     try {
-      await saveTracking('exercises', { id: exerciseId, name, equipment });
+      await saveTracking('exercises', {
+        id: exerciseId,
+        name,
+        equipment,
+        category: exerciseCategory,
+      });
       setSelected(exerciseId);
+      setCategory(exerciseCategory);
       setAdding(false);
       setExerciseId(newId());
     } catch {
@@ -476,23 +491,61 @@ function Training({
                 placeholder="Ex.: Leg press 45° — máquina 1"
               />
             </Field>
+            <Field label="Categoria">
+              <select
+                className="h-12 rounded-lg border border-input bg-secondary px-3 text-foreground"
+                name="category"
+                defaultValue="Outros"
+              >
+                {exerciseCategories.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </Field>
             <Feedback error={error} message="" />
             <Button type="submit" disabled={busy} className="h-12">
               {busy ? 'Salvando…' : 'Salvar exercício'}
             </Button>
           </form>
         )}
-        <div className="grid gap-2 sm:grid-cols-2">
-          {exercises.map((item) => (
+        <div
+          className="mb-4 flex gap-2 overflow-x-auto pb-1"
+          aria-label="Filtrar exercícios por categoria"
+        >
+          {(['Todos', ...exerciseCategories] as const).map((item) => (
             <Button
-              key={item.id}
-              variant={item.id === exercise?.id ? 'default' : 'secondary'}
-              className="h-auto min-h-12 justify-start whitespace-normal py-3 text-left"
-              onClick={() => setSelected(item.id)}
+              key={item}
+              type="button"
+              size="sm"
+              variant={category === item ? 'default' : 'secondary'}
+              onClick={() => setCategory(item)}
             >
-              {item.name}
+              {item}
             </Button>
           ))}
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {exercises
+            .filter(
+              (item) =>
+                category === 'Todos' ||
+                (item.category || 'Outros') === category,
+            )
+            .map((item) => (
+              <Button
+                key={item.id}
+                variant={item.id === exercise?.id ? 'default' : 'secondary'}
+                className="h-auto min-h-12 justify-start whitespace-normal py-3 text-left"
+                onClick={() => setSelected(item.id)}
+              >
+                <span>
+                  <span className="block">{item.name}</span>
+                  <span className="block text-xs opacity-70">
+                    {item.category || 'Outros'}
+                  </span>
+                </span>
+              </Button>
+            ))}
         </div>
       </Panel>
       {exercise && (
@@ -567,8 +620,8 @@ function LoadForm({
     <>
       <Panel>
         <h2 className="text-xl font-bold">{exercise.name}</h2>
-        {exercise.id === 'supino-reto-halteres' ? (
-          <ExerciseDemonstration />
+        {exerciseAnimation(exercise.id) ? (
+          <ExerciseDemonstration exerciseId={exercise.id} />
         ) : (
           <details className="my-4 rounded-2xl bg-secondary p-4">
             <summary className="cursor-pointer text-sm text-primary">

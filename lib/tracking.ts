@@ -16,7 +16,23 @@ export type Measurement = {
   thigh: number | null;
   calf: number | null;
 };
-export type Exercise = { id: string; name: string; equipment: string };
+export const exerciseCategories = [
+  'Peito',
+  'Costas',
+  'Ombros',
+  'Bíceps',
+  'Tríceps',
+  'Pernas',
+  'Abdômen',
+  'Outros',
+] as const;
+export type ExerciseCategory = (typeof exerciseCategories)[number];
+export type Exercise = {
+  id: string;
+  name: string;
+  equipment: string;
+  category?: ExerciseCategory;
+};
 export type LoadEntry = {
   id: string;
   exerciseId: string;
@@ -49,11 +65,38 @@ export const initialExercises: Exercise[] = [
     id: 'supino-reto-halteres',
     name: 'Supino reto com halteres',
     equipment: 'Halteres',
+    category: 'Peito',
   },
-  { id: 'supino-inclinado', name: 'Supino inclinado', equipment: 'Halteres' },
-  { id: 'crucifixo', name: 'Crucifixo', equipment: 'Halteres' },
-  { id: 'triceps-polia', name: 'Tríceps na polia', equipment: 'Polia' },
-  { id: 'elevacao-lateral', name: 'Elevação lateral', equipment: 'Halteres' },
+  {
+    id: 'supino-inclinado',
+    name: 'Supino inclinado',
+    equipment: 'Halteres',
+    category: 'Peito',
+  },
+  {
+    id: 'crucifixo',
+    name: 'Crucifixo',
+    equipment: 'Halteres',
+    category: 'Peito',
+  },
+  {
+    id: 'triceps-polia',
+    name: 'Tríceps na polia',
+    equipment: 'Polia',
+    category: 'Tríceps',
+  },
+  {
+    id: 'elevacao-lateral',
+    name: 'Elevação lateral',
+    equipment: 'Halteres',
+    category: 'Ombros',
+  },
+  {
+    id: 'rosca-concentrada-halteres',
+    name: 'Rosca concentrada com halter',
+    equipment: 'Halter',
+    category: 'Bíceps',
+  },
 ];
 export function localDate(now = new Date()) {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;

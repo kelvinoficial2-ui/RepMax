@@ -1,23 +1,51 @@
-// Same sprite and pose order as the approved preview. No generated replacements.
-export const SUPINO_SPRITE = '/exercises/supino-reto-halteres-v1.jpg';
-// These frames progress monotonically from the chest to full extension.
-// Frames 8–10 repeat earlier heights and caused a visible backward jump.
-// Frame 11 changes the torso, so the stable frame 7 is the extension limit.
-export const SUPINO_UPWARD_POSES = [0, 1, 2, 3, 4, 5, 6, 7];
-export const SUPINO_SEQUENCE = [
-  0,
-  0,
-  ...SUPINO_UPWARD_POSES,
-  7,
-  7,
-  ...SUPINO_UPWARD_POSES.slice(0, -1).reverse(),
-];
-export const SUPINO_FRAME_MS = 125;
-export function supinoFrame(index: number) {
-  const frame = SUPINO_SEQUENCE[index % SUPINO_SEQUENCE.length];
+type ExerciseAnimation = {
+  src: string;
+  cellSize: number;
+  columns: number;
+  upwardPoses: number[];
+};
+
+const animations: Record<string, ExerciseAnimation> = {
+  'supino-reto-halteres': {
+    src: '/exercises/supino-reto-halteres-v1.jpg',
+    cellSize: 362,
+    columns: 4,
+    upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7],
+  },
+  'rosca-concentrada-halteres': {
+    src: '/exercises/rosca-concentrada-halteres-v1.jpg',
+    cellSize: 418,
+    columns: 4,
+    upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+  },
+};
+
+export const EXERCISE_FRAME_MS = 125;
+export function exerciseAnimation(exerciseId: string) {
+  const animation = animations[exerciseId];
+  if (!animation) return null;
+  const first = animation.upwardPoses[0];
+  const end = animation.upwardPoses.at(-1)!;
   return {
-    x: (frame % 4) * 362 + 1,
-    y: Math.floor(frame / 4) * 362 + 1,
-    size: 360,
+    ...animation,
+    sequence: [
+      first,
+      first,
+      ...animation.upwardPoses,
+      end,
+      end,
+      ...animation.upwardPoses.slice(0, -1).reverse(),
+    ],
+  };
+}
+
+export function exerciseAnimationFrame(exerciseId: string, index: number) {
+  const animation = exerciseAnimation(exerciseId);
+  if (!animation) return null;
+  const frame = animation.sequence[index % animation.sequence.length];
+  return {
+    x: (frame % animation.columns) * animation.cellSize + 1,
+    y: Math.floor(frame / animation.columns) * animation.cellSize + 1,
+    size: animation.cellSize - 2,
   };
 }

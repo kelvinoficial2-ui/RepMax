@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  SUPINO_SPRITE,
-  SUPINO_SEQUENCE,
-  SUPINO_FRAME_MS,
-  supinoFrame,
+  EXERCISE_FRAME_MS,
+  exerciseAnimation,
+  exerciseAnimationFrame,
 } from '@/lib/exercise-animation';
 
-export function ExerciseDemonstration() {
+export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
+  const animation = exerciseAnimation(exerciseId)!;
   const canvas = useRef<HTMLCanvasElement>(null);
   const image = useRef<HTMLImageElement | null>(null);
   const position = useRef(0);
@@ -53,7 +53,7 @@ export function ExerciseDemonstration() {
       }
       image.current = sprite;
       position.current = 0;
-      const frame = supinoFrame(0);
+      const frame = exerciseAnimationFrame(exerciseId, 0)!;
       context.drawImage(
         sprite,
         frame.x,
@@ -70,14 +70,14 @@ export function ExerciseDemonstration() {
     sprite.onerror = () => {
       if (!disposed) setFailed(true);
     };
-    sprite.src = SUPINO_SPRITE;
+    sprite.src = animation.src;
     return () => {
       disposed = true;
       sprite.onload = null;
       sprite.onerror = null;
       image.current = null;
     };
-  }, [attempt]);
+  }, [animation.src, attempt, exerciseId]);
 
   useEffect(() => {
     if (!ready || !playing || !visible) return;
@@ -85,8 +85,8 @@ export function ExerciseDemonstration() {
       if (document.hidden || !image.current) return;
       const context = canvas.current?.getContext('2d');
       if (!context) return;
-      position.current = (position.current + 1) % SUPINO_SEQUENCE.length;
-      const frame = supinoFrame(position.current);
+      position.current = (position.current + 1) % animation.sequence.length;
+      const frame = exerciseAnimationFrame(exerciseId, position.current)!;
       context.drawImage(
         image.current,
         frame.x,
@@ -98,9 +98,9 @@ export function ExerciseDemonstration() {
         512,
         512,
       );
-    }, SUPINO_FRAME_MS);
+    }, EXERCISE_FRAME_MS);
     return () => window.clearInterval(timer);
-  }, [ready, playing, visible]);
+  }, [animation.sequence.length, exerciseId, ready, playing, visible]);
 
   return (
     <div className="my-4 overflow-hidden rounded-2xl bg-[#061316]">
@@ -108,10 +108,10 @@ export function ExerciseDemonstration() {
         ref={canvas}
         width={512}
         height={512}
-        aria-label="Personagem RepMax demonstrando supino reto com halteres, elevando e abaixando os pesos."
+        aria-label="Personagem RepMax demonstrando o exercício selecionado."
         className="mx-auto block aspect-square w-full max-w-lg"
       >
-        Demonstração animada de supino reto com halteres.
+        Demonstração animada do exercício selecionado.
       </canvas>
       <div className="flex flex-wrap items-center justify-between gap-3 p-4">
         {failed ? (
