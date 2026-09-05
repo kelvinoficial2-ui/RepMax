@@ -33,6 +33,12 @@ const animations: Record<string, ExerciseAnimation> = {
     // Coordinates of the selected top plates inside each 362 px frame.
     movingWeight: { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
   },
+  'crucifixo-polia-alta': {
+    src: '/exercises/crucifixo-polia-alta-v1.jpg',
+    cellSize: 362,
+    columns: 4,
+    upwardPoses: [0, 1, 2, 3, 4],
+  },
 };
 
 export const EXERCISE_FRAME_MS = 125;

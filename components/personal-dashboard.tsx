@@ -17,6 +17,7 @@ import {
   parseLoad,
   compare,
   comparableLoads,
+  defaultLoadBasis,
   type Measurement,
   type LoadEntry,
   type Exercise,
@@ -573,10 +574,7 @@ function LoadForm({
     latest?.equipment || exercise.equipment,
   );
   const [basis, setBasis] = useState(
-    latest?.basis ||
-      (exercise.equipment.toLowerCase().includes('halter')
-        ? bases[0]
-        : bases[2]),
+    latest?.basis || defaultLoadBasis(exercise),
   );
   const matching = comparableLoads(loads, {
     exerciseId: exercise.id,
@@ -589,7 +587,7 @@ function LoadForm({
     setEditing(entry);
     setId(entry?.id || newId());
     setEquipment(entry?.equipment || latest?.equipment || exercise.equipment);
-    setBasis(entry?.basis || latest?.basis || bases[0]);
+    setBasis(entry?.basis || latest?.basis || defaultLoadBasis(exercise));
     setError('');
     setMessage('');
   }
@@ -699,8 +697,9 @@ function LoadForm({
             </Field>
           </fieldset>
           <p className="text-xs leading-5 text-muted-foreground">
-            Ex.: dois halteres de 10 kg = 10 kg por halter. Na barra, informe o
-            total incluindo a barra. Se as séries tiveram cargas ou repetições
+            Ex.: dois halteres de 10 kg = 10 kg por halter. No crossover,
+            informe a carga selecionada em cada lado. Na barra, informe o total
+            incluindo a barra. Se as séries tiveram cargas ou repetições
             diferentes, salve registros separados. Não compare máquinas
             diferentes como se fossem iguais.
           </p>

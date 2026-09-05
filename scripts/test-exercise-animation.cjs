@@ -22,6 +22,7 @@ for (const [id, width, height, poseCount] of [
   ['supino-reto-halteres', 1448, 1086, 8],
   ['rosca-concentrada-halteres', 1672, 1254, 12],
   ['abdominal-polia-alta-em-pe', 1448, 1086, 12],
+  ['crucifixo-polia-alta', 1448, 1086, 5],
 ]) {
   const definition = animation.exerciseAnimation(id);
   assert(definition);
@@ -82,6 +83,12 @@ const abdominal = tracking.initialExercises.find(
 );
 assert.equal(abdominal.category, 'Abdômen');
 assert.equal(abdominal.equipment, 'Polia alta com corda');
+const crossover = tracking.initialExercises.find(
+  (e) => e.id === 'crucifixo-polia-alta',
+);
+assert.equal(crossover.category, 'Peito');
+assert.equal(crossover.equipment, 'Crossover / polia dupla');
+assert.equal(tracking.defaultLoadBasis(crossover), 'kg por lado');
 assert.equal(
   new Set(tracking.initialExercises.map((e) => e.id)).size,
   tracking.initialExercises.length,

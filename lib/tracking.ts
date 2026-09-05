@@ -46,6 +46,7 @@ export type LoadEntry = {
 };
 export const bases = [
   'kg por halter',
+  'kg por lado',
   'kg total da barra',
   'kg indicado na máquina',
   'kg adicional',
@@ -80,6 +81,12 @@ export const initialExercises: Exercise[] = [
     category: 'Peito',
   },
   {
+    id: 'crucifixo-polia-alta',
+    name: 'Crucifixo em pé na polia alta',
+    equipment: 'Crossover / polia dupla',
+    category: 'Peito',
+  },
+  {
     id: 'triceps-polia',
     name: 'Tríceps na polia',
     equipment: 'Polia',
@@ -104,6 +111,12 @@ export const initialExercises: Exercise[] = [
     category: 'Abdômen',
   },
 ];
+export function defaultLoadBasis(exercise: Exercise) {
+  if (exercise.id === 'crucifixo-polia-alta') return bases[1];
+  return exercise.equipment.toLowerCase().includes('halter')
+    ? bases[0]
+    : bases[3];
+}
 export function localDate(now = new Date()) {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
