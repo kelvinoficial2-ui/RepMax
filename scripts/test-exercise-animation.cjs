@@ -17,14 +17,11 @@ function readModule(path) {
 }
 const animation = readModule('lib/exercise-animation.ts');
 const tracking = readModule('lib/tracking.ts');
-assert.deepEqual(
-  [...animation.SUPINO_UPWARD_POSES],
-  [0, 1, 2, 3, 4, 5, 6, 7, 11],
-);
-assert.equal(new Set(animation.SUPINO_SEQUENCE).size, 9);
+assert.deepEqual([...animation.SUPINO_UPWARD_POSES], [0, 1, 2, 3, 4, 5, 6, 7]);
+assert.equal(new Set(animation.SUPINO_SEQUENCE).size, 8);
 assert.equal(animation.SUPINO_FRAME_MS, 125);
 assert.equal(animation.SUPINO_SEQUENCE[0], animation.SUPINO_SEQUENCE.at(-1));
-const highest = animation.SUPINO_SEQUENCE.indexOf(11);
+const highest = animation.SUPINO_SEQUENCE.indexOf(7);
 assert.deepEqual(
   [...animation.SUPINO_SEQUENCE.slice(2, highest + 1)],
   [...animation.SUPINO_UPWARD_POSES],
@@ -33,6 +30,7 @@ assert.deepEqual(
   [...animation.SUPINO_SEQUENCE.slice(-animation.SUPINO_UPWARD_POSES.length)],
   [...animation.SUPINO_UPWARD_POSES].reverse(),
 );
+assert(!animation.SUPINO_SEQUENCE.includes(11));
 for (let index = 0; index < animation.SUPINO_SEQUENCE.length; index++) {
   const frame = animation.supinoFrame(index);
   assert(frame.x >= 0 && frame.x + frame.size <= 1448);
