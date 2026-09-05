@@ -42,6 +42,27 @@ assert.equal(
   animation.exerciseAnimation('abdominal-polia-alta-em-pe').src,
   '/exercises/abdominal-polia-alta-em-pe-v2.jpg',
 );
+const movingWeight = animation.exerciseAnimation(
+  'abdominal-polia-alta-em-pe',
+).movingWeight;
+assert.deepEqual(
+  { ...movingWeight },
+  { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
+);
+const abdominalSequence = animation.exerciseAnimation(
+  'abdominal-polia-alta-em-pe',
+).sequence;
+assert.equal(
+  animation.exerciseAnimationFrame('abdominal-polia-alta-em-pe', 0).progress,
+  0,
+);
+assert.equal(
+  animation.exerciseAnimationFrame(
+    'abdominal-polia-alta-em-pe',
+    abdominalSequence.indexOf(11),
+  ).progress,
+  1,
+);
 const flat = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-halteres',
 );

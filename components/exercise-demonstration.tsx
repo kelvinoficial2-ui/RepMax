@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Play, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,7 +8,7 @@ import {
 } from '@/lib/exercise-animation';
 
 export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
-  const animation = exerciseAnimation(exerciseId)!;
+  const animation = useMemo(() => exerciseAnimation(exerciseId)!, [exerciseId]);
   const canvas = useRef<HTMLCanvasElement>(null);
   const image = useRef<HTMLImageElement | null>(null);
   const position = useRef(0);
@@ -21,6 +21,44 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
   );
   const [visible, setVisible] = useState(false);
   const [attempt, setAttempt] = useState(0);
+
+  const drawFrame = useCallback(
+    function drawFrame(
+      context: CanvasRenderingContext2D,
+      sprite: HTMLImageElement,
+      index: number,
+    ) {
+      const frame = exerciseAnimationFrame(exerciseId, index)!;
+      context.clearRect(0, 0, 512, 512);
+      context.drawImage(
+        sprite,
+        frame.x,
+        frame.y,
+        frame.size,
+        frame.size,
+        0,
+        0,
+        512,
+        512,
+      );
+      if (!animation.movingWeight || frame.progress <= 0) return;
+      const weight = animation.movingWeight;
+      const scale = 512 / frame.size;
+      const lift = weight.maxLift * frame.progress;
+      context.drawImage(
+        sprite,
+        frame.x + weight.x,
+        frame.y + weight.y,
+        weight.width,
+        weight.height,
+        weight.x * scale,
+        (weight.y - lift) * scale,
+        weight.width * scale,
+        weight.height * scale,
+      );
+    },
+    [animation.movingWeight, exerciseId],
+  );
 
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -53,18 +91,7 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
       }
       image.current = sprite;
       position.current = 0;
-      const frame = exerciseAnimationFrame(exerciseId, 0)!;
-      context.drawImage(
-        sprite,
-        frame.x,
-        frame.y,
-        frame.size,
-        frame.size,
-        0,
-        0,
-        512,
-        512,
-      );
+      drawFrame(context, sprite, 0);
       setReady(true);
     };
     sprite.onerror = () => {
@@ -77,7 +104,7 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
       sprite.onerror = null;
       image.current = null;
     };
-  }, [animation.src, attempt, exerciseId]);
+  }, [animation.src, attempt, drawFrame]);
 
   useEffect(() => {
     if (!ready || !playing || !visible) return;
@@ -86,21 +113,10 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
       const context = canvas.current?.getContext('2d');
       if (!context) return;
       position.current = (position.current + 1) % animation.sequence.length;
-      const frame = exerciseAnimationFrame(exerciseId, position.current)!;
-      context.drawImage(
-        image.current,
-        frame.x,
-        frame.y,
-        frame.size,
-        frame.size,
-        0,
-        0,
-        512,
-        512,
-      );
+      drawFrame(context, image.current, position.current);
     }, EXERCISE_FRAME_MS);
     return () => window.clearInterval(timer);
-  }, [animation.sequence.length, exerciseId, ready, playing, visible]);
+  }, [animation.sequence.length, drawFrame, ready, playing, visible]);
 
   return (
     <div className="my-4 overflow-hidden rounded-2xl bg-[#061316]">

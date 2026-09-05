@@ -3,6 +3,13 @@ type ExerciseAnimation = {
   cellSize: number;
   columns: number;
   upwardPoses: number[];
+  movingWeight?: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    maxLift: number;
+  };
 };
 
 const animations: Record<string, ExerciseAnimation> = {
@@ -23,6 +30,8 @@ const animations: Record<string, ExerciseAnimation> = {
     cellSize: 362,
     columns: 4,
     upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    // Coordinates of the selected top plates inside each 362 px frame.
+    movingWeight: { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
   },
 };
 
@@ -50,8 +59,12 @@ export function exerciseAnimationFrame(exerciseId: string, index: number) {
   if (!animation) return null;
   const frame = animation.sequence[index % animation.sequence.length];
   return {
+    frame,
     x: (frame % animation.columns) * animation.cellSize + 1,
     y: Math.floor(frame / animation.columns) * animation.cellSize + 1,
     size: animation.cellSize - 2,
+    progress:
+      animation.upwardPoses.indexOf(frame) /
+      Math.max(1, animation.upwardPoses.length - 1),
   };
 }
