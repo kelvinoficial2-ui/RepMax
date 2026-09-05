@@ -38,6 +38,10 @@ for (const [id, width, height, poseCount] of [
   assert(fs.readFileSync('dist' + definition.src).equals(asset));
 }
 assert.equal(animation.exerciseAnimation('sem-animacao'), null);
+assert.equal(
+  animation.exerciseAnimation('abdominal-polia-alta-em-pe').src,
+  '/exercises/abdominal-polia-alta-em-pe-v2.jpg',
+);
 const flat = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-halteres',
 );
