@@ -105,6 +105,12 @@ export const initialExercises: Exercise[] = [
     category: 'Ombros',
   },
   {
+    id: 'cadeira-extensora',
+    name: 'Cadeira extensora',
+    equipment: 'Cadeira extensora',
+    category: 'Pernas',
+  },
+  {
     id: 'rosca-concentrada-halteres',
     name: 'Rosca concentrada com halter',
     equipment: 'Halter',

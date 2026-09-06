@@ -77,6 +77,18 @@ assert(
     .readFileSync('dist/exercises/supino-reto-barra.gif')
     .equals(barbellBenchGif),
 );
+const legExtensionAnimation = animation.exerciseAnimation('cadeira-extensora');
+assert.equal(legExtensionAnimation.src, '/exercises/cadeira-extensora.gif');
+assert.equal(legExtensionAnimation.animatedGif, true);
+const legExtensionGif = fs.readFileSync(
+  'public/exercises/cadeira-extensora.gif',
+);
+assert.equal(legExtensionGif.subarray(0, 6).toString(), 'GIF89a');
+assert(
+  fs
+    .readFileSync('dist/exercises/cadeira-extensora.gif')
+    .equals(legExtensionGif),
+);
 assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
   fs
@@ -108,6 +120,12 @@ const abdominal = tracking.initialExercises.find(
 );
 assert.equal(abdominal.category, 'Abdômen');
 assert.equal(abdominal.equipment, 'Polia alta com corda');
+const legExtension = tracking.initialExercises.find(
+  (e) => e.id === 'cadeira-extensora',
+);
+assert.equal(legExtension.category, 'Pernas');
+assert.equal(legExtension.equipment, 'Cadeira extensora');
+assert.equal(tracking.defaultLoadBasis(legExtension), 'kg indicado na máquina');
 const crossover = tracking.initialExercises.find(
   (e) => e.id === 'crucifixo-polia-alta',
 );
