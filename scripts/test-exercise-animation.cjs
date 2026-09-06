@@ -20,7 +20,6 @@ const tracking = readModule('lib/tracking.ts');
 assert.equal(animation.EXERCISE_FRAME_MS, 125);
 for (const [id, width, height, poseCount] of [
   ['supino-reto-halteres', 1448, 1086, 8],
-  ['rosca-concentrada-halteres', 1672, 1254, 12],
 ]) {
   const definition = animation.exerciseAnimation(id);
   assert(definition);
@@ -52,6 +51,10 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
   'encolhimento-halteres':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/ENCOLHIMENTO_COM_ALTERES.gif',
+  'crucifixo-polia-alta':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
+  'rosca-concentrada-halteres':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659171/avatares/ROSCA_CONCENTRADA_COM_HALTERES.gif',
 };
 for (const [id, src] of Object.entries(cloudinaryGifs)) {
   const definition = animation.exerciseAnimation(id);
@@ -59,23 +62,6 @@ for (const [id, src] of Object.entries(cloudinaryGifs)) {
   assert.equal(definition.animatedGif, true);
   assert.equal(new URL(definition.src).hostname, 'res.cloudinary.com');
 }
-assert.equal(
-  animation.exerciseAnimation('crucifixo-polia-alta').src,
-  '/exercises/crucifixo-polia-alta.gif',
-);
-assert.equal(
-  animation.exerciseAnimation('crucifixo-polia-alta').animatedGif,
-  true,
-);
-const crossoverGif = fs.readFileSync(
-  'public/exercises/crucifixo-polia-alta.gif',
-);
-assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/crucifixo-polia-alta.gif')
-    .equals(crossoverGif),
-);
 const flat = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-halteres',
 );

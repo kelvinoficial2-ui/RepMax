@@ -35,10 +35,11 @@ const animations: Record<string, ExerciseAnimation> = {
     upwardPoses: [0],
   },
   'rosca-concentrada-halteres': {
-    src: '/exercises/rosca-concentrada-halteres-v1.jpg',
-    cellSize: 418,
-    columns: 4,
-    upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659171/avatares/ROSCA_CONCENTRADA_COM_HALTERES.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
   },
   'cadeira-extensora': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
@@ -76,7 +77,7 @@ const animations: Record<string, ExerciseAnimation> = {
     upwardPoses: [0],
   },
   'crucifixo-polia-alta': {
-    src: '/exercises/crucifixo-polia-alta.gif',
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
     animatedGif: true,
     cellSize: 1,
     columns: 1,
