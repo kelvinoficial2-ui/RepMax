@@ -69,6 +69,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'abdominal-halter-bracos-estendidos': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658752/avatares/42481301-Dumbbell-Straight-Arm-Crunch_Waist_720_1.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'panturrilha-sentada-maquina': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/PANTURRILHA.gif',
     animatedGif: true,

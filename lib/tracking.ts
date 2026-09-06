@@ -140,6 +140,12 @@ export const initialExercises: Exercise[] = [
     equipment: 'Polia alta com corda',
     category: 'Abdômen',
   },
+  {
+    id: 'abdominal-halter-bracos-estendidos',
+    name: 'Abdominal com halter e braços estendidos',
+    equipment: 'Halter',
+    category: 'Abdômen',
+  },
 ];
 export function defaultLoadBasis(exercise: Exercise) {
   if (exercise.id === 'crucifixo-polia-alta') return bases[1];

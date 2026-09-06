@@ -41,6 +41,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/SUPINO_BARRA.gif',
   'abdominal-polia-alta-em-pe':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/ABDOMINAL_NA_POLIA.gif',
+  'abdominal-halter-bracos-estendidos':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658752/avatares/42481301-Dumbbell-Straight-Arm-Crunch_Waist_720_1.gif',
   'cadeira-extensora':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
   'remada-alta-halteres':
@@ -89,6 +91,13 @@ const abdominal = tracking.initialExercises.find(
 );
 assert.equal(abdominal.category, 'Abdômen');
 assert.equal(abdominal.equipment, 'Polia alta com corda');
+const dumbbellCrunch = tracking.initialExercises.find(
+  (e) => e.id === 'abdominal-halter-bracos-estendidos',
+);
+assert.equal(dumbbellCrunch.name, 'Abdominal com halter e braços estendidos');
+assert.equal(dumbbellCrunch.category, 'Abdômen');
+assert.equal(dumbbellCrunch.equipment, 'Halter');
+assert.equal(tracking.defaultLoadBasis(dumbbellCrunch), 'kg por halter');
 const legExtension = tracking.initialExercises.find(
   (e) => e.id === 'cadeira-extensora',
 );
