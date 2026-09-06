@@ -106,8 +106,14 @@ export const initialExercises: Exercise[] = [
   },
   {
     id: 'elevacao-lateral',
-    name: 'Elevação lateral',
+    name: 'Elevação lateral em pé com halteres',
     equipment: 'Halteres',
+    category: 'Ombros',
+  },
+  {
+    id: 'elevacao-lateral-sentada',
+    name: 'Elevação lateral sentada com halteres',
+    equipment: 'Halteres e banco',
     category: 'Ombros',
   },
   {

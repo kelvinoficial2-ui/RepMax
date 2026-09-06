@@ -47,6 +47,10 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
   'remada-alta-halteres':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/REMADA_ALTA_COM_HALTERES.gif',
+  'elevacao-lateral':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660649/avatares/download_2.gif',
+  'elevacao-lateral-sentada':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660703/avatares/download_3.gif',
   'panturrilha-sentada-maquina':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/PANTURRILHA.gif',
   'supino-inclinado':
@@ -122,6 +126,17 @@ const uprightRow = tracking.initialExercises.find(
 assert.equal(uprightRow.category, 'Ombros');
 assert.equal(uprightRow.equipment, 'Halteres');
 assert.equal(tracking.defaultLoadBasis(uprightRow), 'kg por halter');
+const standingLateralRaise = tracking.initialExercises.find(
+  (e) => e.id === 'elevacao-lateral',
+);
+const seatedLateralRaise = tracking.initialExercises.find(
+  (e) => e.id === 'elevacao-lateral-sentada',
+);
+assert.equal(standingLateralRaise.name, 'Elevação lateral em pé com halteres');
+assert.equal(standingLateralRaise.category, 'Ombros');
+assert.equal(seatedLateralRaise.name, 'Elevação lateral sentada com halteres');
+assert.equal(seatedLateralRaise.category, 'Ombros');
+assert.equal(tracking.defaultLoadBasis(seatedLateralRaise), 'kg por halter');
 const crossover = tracking.initialExercises.find(
   (e) => e.id === 'crucifixo-polia-alta',
 );

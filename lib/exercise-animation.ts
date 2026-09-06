@@ -62,6 +62,20 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'elevacao-lateral': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660649/avatares/download_2.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
+  'elevacao-lateral-sentada': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660703/avatares/download_3.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'abdominal-polia-alta-em-pe': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/ABDOMINAL_NA_POLIA.gif',
     animatedGif: true,
