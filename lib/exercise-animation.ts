@@ -27,6 +27,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'supino-inclinado': {
+    src: '/exercises/supino-inclinado-halteres.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'rosca-concentrada-halteres': {
     src: '/exercises/rosca-concentrada-halteres-v1.jpg',
     cellSize: 418,

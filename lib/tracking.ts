@@ -76,7 +76,7 @@ export const initialExercises: Exercise[] = [
   },
   {
     id: 'supino-inclinado',
-    name: 'Supino inclinado',
+    name: 'Supino inclinado com halteres',
     equipment: 'Halteres',
     category: 'Peito',
   },

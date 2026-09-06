@@ -89,6 +89,18 @@ assert(
     .readFileSync('dist/exercises/cadeira-extensora.gif')
     .equals(legExtensionGif),
 );
+const inclineAnimation = animation.exerciseAnimation('supino-inclinado');
+assert.equal(inclineAnimation.src, '/exercises/supino-inclinado-halteres.gif');
+assert.equal(inclineAnimation.animatedGif, true);
+const inclineGif = fs.readFileSync(
+  'public/exercises/supino-inclinado-halteres.gif',
+);
+assert.equal(inclineGif.subarray(0, 6).toString(), 'GIF89a');
+assert(
+  fs
+    .readFileSync('dist/exercises/supino-inclinado-halteres.gif')
+    .equals(inclineGif),
+);
 assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
   fs
@@ -104,6 +116,8 @@ const inclined = tracking.initialExercises.find(
 assert(flat && inclined && flat.id !== inclined.id);
 assert.equal(flat.equipment, 'Halteres');
 assert.equal(flat.category, 'Peito');
+assert.equal(inclined.name, 'Supino inclinado com halteres');
+assert.equal(tracking.defaultLoadBasis(inclined), 'kg por halter');
 const barbellBench = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-barra',
 );
