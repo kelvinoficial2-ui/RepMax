@@ -99,6 +99,12 @@ export const initialExercises: Exercise[] = [
     category: 'Tríceps',
   },
   {
+    id: 'encolhimento-halteres',
+    name: 'Encolhimento com halteres',
+    equipment: 'Halteres',
+    category: 'Costas',
+  },
+  {
     id: 'elevacao-lateral',
     name: 'Elevação lateral',
     equipment: 'Halteres',

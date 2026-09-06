@@ -47,6 +47,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'encolhimento-halteres': {
+    src: '/exercises/encolhimento-halteres.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'abdominal-polia-alta-em-pe': {
     src: '/exercises/abdominal-polia-alta-em-pe.gif',
     animatedGif: true,
