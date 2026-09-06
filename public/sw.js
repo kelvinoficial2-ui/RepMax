@@ -1,4 +1,4 @@
-const CACHE = 'repmax-v43';
+const CACHE = 'repmax-v44';
 const APP_SHELL = [
   '/',
   '/manifest.webmanifest',

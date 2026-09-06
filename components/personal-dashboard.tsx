@@ -310,7 +310,7 @@ function AnatomyMap({ selected }: { selected: string }) {
     measureFields.find(([key]) => key === selected)?.[4] || selected;
   const focus = anatomyFocus[region] || anatomyFocus.weight;
   return (
-    <aside className="sticky top-[max(4.5rem,env(safe-area-inset-top))] z-10 order-first overflow-hidden rounded-2xl bg-black ring-1 ring-primary/25 lg:order-last lg:top-4">
+    <aside className="order-first overflow-hidden rounded-2xl bg-black ring-1 ring-primary/25">
       <div className="text-center">
         <p className="px-4 pt-4 text-xs font-bold tracking-[0.18em] text-primary uppercase">
           Local da medida
@@ -322,30 +322,32 @@ function AnatomyMap({ selected }: { selected: string }) {
       <div
         role="img"
         aria-label={`Foco anatômico: ${anatomyLabels[selected] || 'corpo inteiro'}`}
-        className="relative mt-3 h-52 overflow-hidden bg-black sm:h-64 lg:h-[32rem]"
+        className="relative mt-3 h-64 overflow-hidden bg-black sm:h-72"
       >
-        <div
-          className="absolute top-1/2 left-1/2 h-[92%] aspect-[2/3] -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 ease-out"
-          style={{
-            transform: `translate(-50%, -50%) scale(${focus.scale})`,
-            transformOrigin: `${focus.x}% ${focus.y}%`,
-          }}
-        >
-          <img
-            src="/body-anatomy-v1.webp"
-            alt=""
-            className="h-full w-full object-cover"
-          />
-          {region !== 'weight' && region !== 'height' && (
-            <div
-              className="pointer-events-none absolute h-14 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border-2 border-primary shadow-[0_0_24px_rgb(38_215_198/.75),inset_0_0_18px_rgb(38_215_198/.2)]"
-              style={{
-                left: `${focus.x}%`,
-                top: `${focus.y}%`,
-                transform: `translate(-50%, -50%) scale(${1 / focus.scale})`,
-              }}
+        <div className="absolute top-1/2 left-1/2 h-[92%] aspect-[2/3] -translate-x-1/2 -translate-y-1/2">
+          <div
+            className="relative h-full w-full transition-transform duration-500 ease-out"
+            style={{
+              transform: `scale(${focus.scale})`,
+              transformOrigin: `${focus.x}% ${focus.y}%`,
+            }}
+          >
+            <img
+              src="/body-anatomy-v1.webp"
+              alt=""
+              className="h-full w-full object-cover"
             />
-          )}
+            {region !== 'weight' && region !== 'height' && (
+              <div
+                className="pointer-events-none absolute h-14 w-20 rounded-[50%] border-2 border-primary shadow-[0_0_24px_rgb(38_215_198/.75),inset_0_0_18px_rgb(38_215_198/.2)]"
+                style={{
+                  left: `${focus.x}%`,
+                  top: `${focus.y}%`,
+                  transform: `translate(-50%, -50%) scale(${1 / focus.scale})`,
+                }}
+              />
+            )}
+          </div>
         </div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgb(0_0_0/.62)_100%)]" />
       </div>
@@ -358,7 +360,7 @@ function AnatomyMap({ selected }: { selected: string }) {
 
 function BodyMeasurements({ records }: { records: Measurement[] }) {
   const [month, setMonth] = useState(localDate().slice(0, 7));
-  const [selectedMeasure, setSelectedMeasure] = useState('waist');
+  const [selectedMeasure, setSelectedMeasure] = useState('weight');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -408,10 +410,11 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
           onSubmit={submit}
           className="mt-5"
         >
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+          <div className="grid gap-4">
+            <AnatomyMap selected={selectedMeasure} />
             <fieldset
               disabled={busy}
-              className="order-last min-w-0 space-y-4 lg:order-first"
+              className="min-w-0 max-h-[48vh] space-y-4 overflow-y-auto overscroll-contain rounded-2xl pr-1 pb-1 [scrollbar-color:var(--primary)_transparent]"
             >
               {[...new Set(measureFields.map((field) => field[3]))].map(
                 (group) => (
@@ -452,7 +455,6 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
                 ),
               )}
             </fieldset>
-            <AnatomyMap selected={selectedMeasure} />
           </div>
           {existing && (
             <p className="mt-4 text-sm text-muted-foreground">
