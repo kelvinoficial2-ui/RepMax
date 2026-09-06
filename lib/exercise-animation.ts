@@ -41,6 +41,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'rosca-inversa-barra-reta': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661143/avatares/10_Best_Brachialis_Exercises_To_Build_Bigger_and_Stronger_Arms.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'cadeira-extensora': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
     animatedGif: true,

@@ -153,6 +153,12 @@ export const initialExercises: Exercise[] = [
     category: 'Bíceps',
   },
   {
+    id: 'rosca-inversa-barra-reta',
+    name: 'Rosca inversa em pé com barra reta',
+    equipment: 'Barra reta',
+    category: 'Bíceps',
+  },
+  {
     id: 'abdominal-polia-alta-em-pe',
     name: 'Abdominal em pé na polia alta',
     equipment: 'Polia alta com corda',
@@ -167,7 +173,11 @@ export const initialExercises: Exercise[] = [
 ];
 export function defaultLoadBasis(exercise: Exercise) {
   if (exercise.id === 'crucifixo-polia-alta') return bases[1];
-  if (exercise.id === 'supino-reto-barra') return bases[2];
+  if (
+    exercise.id === 'supino-reto-barra' ||
+    exercise.id === 'rosca-inversa-barra-reta'
+  )
+    return bases[2];
   if (exercise.id === 'panturrilha-sentada-maquina') return bases[4];
   return exercise.equipment.toLowerCase().includes('halter')
     ? bases[0]
