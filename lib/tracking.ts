@@ -9,12 +9,26 @@ export type Measurement = {
   month: string;
   weight: number;
   height: number;
+  armLeft: number | null;
+  armRight: number | null;
+  forearmLeft: number | null;
+  forearmRight: number | null;
+  thighLeft: number | null;
+  thighRight: number | null;
+  calfLeft: number | null;
+  calfRight: number | null;
+  chestRelaxed: number | null;
+  chestInspired: number | null;
   waist: number | null;
-  chest: number | null;
+  abdomen: number | null;
   hip: number | null;
-  arm: number | null;
-  thigh: number | null;
-  calf: number | null;
+  neck: number | null;
+  shoulders: number | null;
+  // Campos antigos permanecem opcionais para exibir avaliações já salvas.
+  chest?: number | null;
+  arm?: number | null;
+  thigh?: number | null;
+  calf?: number | null;
 };
 export const exerciseCategories = [
   'Peito',
@@ -53,15 +67,54 @@ export const bases = [
   'kg total',
 ] as const;
 export const measureFields = [
-  ['weight', 'Peso', 'kg'],
-  ['height', 'Altura', 'cm'],
-  ['waist', 'Cintura', 'cm'],
-  ['chest', 'Peito', 'cm'],
-  ['hip', 'Quadril', 'cm'],
-  ['arm', 'Braço', 'cm'],
-  ['thigh', 'Coxa', 'cm'],
-  ['calf', 'Panturrilha', 'cm'],
+  ['weight', 'Peso', 'kg', 'Dados gerais', 'weight'],
+  ['height', 'Altura', 'cm', 'Dados gerais', 'height'],
+  ['armLeft', 'Braço esquerdo', 'cm', 'Membros superiores', 'armLeft'],
+  ['armRight', 'Braço direito', 'cm', 'Membros superiores', 'armRight'],
+  [
+    'forearmLeft',
+    'Antebraço esquerdo',
+    'cm',
+    'Membros superiores',
+    'forearmLeft',
+  ],
+  [
+    'forearmRight',
+    'Antebraço direito',
+    'cm',
+    'Membros superiores',
+    'forearmRight',
+  ],
+  ['thighLeft', 'Coxa esquerda', 'cm', 'Membros inferiores', 'thighLeft'],
+  ['thighRight', 'Coxa direita', 'cm', 'Membros inferiores', 'thighRight'],
+  ['calfLeft', 'Panturrilha esquerda', 'cm', 'Membros inferiores', 'calfLeft'],
+  ['calfRight', 'Panturrilha direita', 'cm', 'Membros inferiores', 'calfRight'],
+  ['chestRelaxed', 'Tórax relaxado', 'cm', 'Tronco', 'chest'],
+  ['chestInspired', 'Tórax inspirado', 'cm', 'Tronco', 'chest'],
+  ['waist', 'Cintura', 'cm', 'Tronco', 'waist'],
+  ['abdomen', 'Abdômen', 'cm', 'Tronco', 'abdomen'],
+  ['hip', 'Quadril', 'cm', 'Tronco', 'hip'],
+  ['neck', 'Pescoço', 'cm', 'Outros', 'neck'],
+  ['shoulders', 'Ombros', 'cm', 'Outros', 'shoulders'],
 ] as const;
+
+const legacyMeasureKeys: Record<string, keyof Measurement> = {
+  armRight: 'arm',
+  thighRight: 'thigh',
+  calfRight: 'calf',
+  chestRelaxed: 'chest',
+};
+
+export function measurementValue(record: Measurement | undefined, key: string) {
+  if (!record) return undefined;
+  const value = record[key as keyof Measurement];
+  if (typeof value === 'number' || value === null) return value;
+  const legacyKey = legacyMeasureKeys[key];
+  const legacyValue = legacyKey ? record[legacyKey] : undefined;
+  return typeof legacyValue === 'number' || legacyValue === null
+    ? legacyValue
+    : undefined;
+}
 export const initialExercises: Exercise[] = [
   {
     id: 'supino-reto-halteres',

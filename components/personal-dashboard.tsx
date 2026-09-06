@@ -12,6 +12,7 @@ import {
   exerciseCategories,
   inputText,
   measureFields,
+  measurementValue,
   localDate,
   parseMeasurement,
   parseLoad,
@@ -218,8 +219,153 @@ export function PersonalDashboard({
   );
 }
 
+const anatomyLabels = Object.fromEntries(
+  measureFields.map(([key, label]) => [key, label]),
+);
+
+function AnatomyMap({ selected }: { selected: string }) {
+  const active = (...regions: string[]) => regions.includes(selected);
+  const zone = (isActive: boolean) =>
+    isActive
+      ? 'fill-primary stroke-primary [filter:drop-shadow(0_0_8px_rgb(38_215_198/.85))]'
+      : 'fill-transparent stroke-transparent';
+  return (
+    <aside className="sticky top-4 rounded-2xl bg-[#071619] p-4 ring-1 ring-primary/20">
+      <div className="text-center">
+        <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">
+          Mapa corporal
+        </p>
+        <p className="mt-1 min-h-10 text-sm font-semibold">
+          {anatomyLabels[selected] || 'Selecione uma medida'}
+        </p>
+      </div>
+      <svg
+        viewBox="0 0 220 420"
+        role="img"
+        aria-label={`Região destacada: ${anatomyLabels[selected] || 'nenhuma'}`}
+        className="mx-auto mt-2 h-auto w-full max-w-56"
+      >
+        <defs>
+          <linearGradient id="bodyScan" x1="0" y1="0" x2="1" y2="1">
+            <stop stopColor="#254248" />
+            <stop offset="1" stopColor="#10282d" />
+          </linearGradient>
+          <pattern
+            id="scanLines"
+            width="8"
+            height="8"
+            patternUnits="userSpaceOnUse"
+          >
+            <path d="M0 1h8" stroke="#26d7c6" strokeOpacity=".1" />
+          </pattern>
+        </defs>
+        <g fill="url(#bodyScan)" stroke="#416269" strokeWidth="2">
+          <circle cx="110" cy="35" r="25" />
+          <rect x="99" y="58" width="22" height="25" rx="9" />
+          <path d="M78 82Q110 68 142 82l12 79-18 73H84l-18-73z" />
+          <path d="M75 88 48 101 30 191l19 5 28-72z" />
+          <path d="m145 88 27 13 18 90-19 5-28-72z" />
+          <path d="M87 230 70 301l5 105h24l11-104 1-72z" />
+          <path d="m133 230 17 71-5 105h-24l-11-104-1-72z" />
+        </g>
+        <g fill="url(#scanLines)" opacity=".9">
+          <circle cx="110" cy="35" r="23" />
+          <path d="M80 84Q110 71 140 84l11 76-17 70H86l-17-70z" />
+        </g>
+        <g className="transition-all duration-300" strokeWidth="2">
+          <rect
+            className={zone(active('neck'))}
+            x="97"
+            y="57"
+            width="26"
+            height="28"
+            rx="10"
+          />
+          <path
+            className={zone(active('shoulders'))}
+            d="M69 91Q110 66 151 91l-7 29q-34-20-68 0z"
+          />
+          <path
+            className={zone(active('chestRelaxed', 'chestInspired'))}
+            d="M80 112q30-17 60 0l5 39q-35 15-70 0z"
+          />
+          <rect
+            className={zone(active('waist'))}
+            x="82"
+            y="155"
+            width="56"
+            height="24"
+            rx="10"
+          />
+          <rect
+            className={zone(active('abdomen'))}
+            x="84"
+            y="177"
+            width="52"
+            height="32"
+            rx="12"
+          />
+          <path
+            className={zone(active('hip'))}
+            d="M84 207h52l6 27q-32 18-64 0z"
+          />
+          <path
+            className={zone(active('armRight'))}
+            d="m72 94-22 10-10 43 19 5 17-35z"
+          />
+          <path
+            className={zone(active('forearmRight'))}
+            d="m40 145-11 47 20 5 12-48z"
+          />
+          <path
+            className={zone(active('armLeft'))}
+            d="m148 94 22 10 10 43-19 5-17-35z"
+          />
+          <path
+            className={zone(active('forearmLeft'))}
+            d="m180 145 11 47-20 5-12-48z"
+          />
+          <path
+            className={zone(active('thighRight'))}
+            d="M86 232h25l-8 72-32-4z"
+          />
+          <path
+            className={zone(active('thighLeft'))}
+            d="M109 232h25l15 68-32 4z"
+          />
+          <path
+            className={zone(active('calfRight'))}
+            d="m71 300 32 3-5 101H76z"
+          />
+          <path
+            className={zone(active('calfLeft'))}
+            d="m117 303 32-3-5 104h-22z"
+          />
+          <circle
+            className={zone(active('weight', 'height'))}
+            cx="110"
+            cy="205"
+            r="91"
+            strokeDasharray="7 8"
+          />
+        </g>
+        <path
+          d="M110 12v394"
+          stroke="#26d7c6"
+          strokeOpacity=".12"
+          strokeDasharray="3 8"
+        />
+      </svg>
+      <p className="mt-2 text-center text-xs text-muted-foreground">
+        Esquerdo e direito consideram o lado da pessoa ilustrada.
+      </p>
+    </aside>
+  );
+}
+
 function BodyMeasurements({ records }: { records: Measurement[] }) {
   const [month, setMonth] = useState(localDate().slice(0, 7));
+  const [selectedMeasure, setSelectedMeasure] = useState('waist');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -247,8 +393,8 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
         <h2 className="text-xl font-bold">Medidas do mês</h2>
         <p className="mt-2 mb-5 text-sm text-muted-foreground">
           Uma avaliação por mês. Peso e altura são obrigatórios; preencha as
-          outras medidas que deseja acompanhar. Use sempre o mesmo lado e ponto
-          de medição.
+          outras medidas que deseja acompanhar. Toque em um campo para localizar
+          a região no mapa corporal. Meça sempre no mesmo ponto.
         </p>
         <Field label="Mês da avaliação">
           <Input
@@ -269,23 +415,54 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
           onSubmit={submit}
           className="mt-5"
         >
-          <fieldset disabled={busy} className="grid grid-cols-2 gap-4">
-            {measureFields.map(([key, label, unit]) => (
-              <Field
-                key={key}
-                label={`${label} (${unit})${key === 'weight' || key === 'height' ? ' *' : ''}`}
-              >
-                <Input
-                  className="h-12"
-                  name={key}
-                  inputMode="decimal"
-                  defaultValue={existing?.[key] ?? ''}
-                  required={key === 'weight' || key === 'height'}
-                  placeholder={key === 'height' ? 'Ex.: 175' : '0,0'}
-                />
-              </Field>
-            ))}
-          </fieldset>
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+            <fieldset disabled={busy} className="space-y-4">
+              {[...new Set(measureFields.map((field) => field[3]))].map(
+                (group) => (
+                  <section
+                    key={group}
+                    className="rounded-2xl bg-secondary/55 p-4 ring-1 ring-border"
+                  >
+                    <h3 className="mb-3 font-bold text-primary">{group}</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      {measureFields
+                        .filter((field) => field[3] === group)
+                        .map(([key, label, unit]) => (
+                          <div
+                            key={key}
+                            className={
+                              selectedMeasure === key
+                                ? 'rounded-xl ring-2 ring-primary'
+                                : 'rounded-xl'
+                            }
+                          >
+                            <Field
+                              label={`${label} (${unit})${key === 'weight' || key === 'height' ? ' *' : ''}`}
+                            >
+                              <Input
+                                className="h-12"
+                                name={key}
+                                inputMode="decimal"
+                                defaultValue={
+                                  measurementValue(existing, key) ?? ''
+                                }
+                                required={key === 'weight' || key === 'height'}
+                                placeholder={
+                                  key === 'height' ? 'Ex.: 175' : '0,0'
+                                }
+                                onFocus={() => setSelectedMeasure(key)}
+                                onClick={() => setSelectedMeasure(key)}
+                              />
+                            </Field>
+                          </div>
+                        ))}
+                    </div>
+                  </section>
+                ),
+              )}
+            </fieldset>
+            <AnatomyMap selected={selectedMeasure} />
+          </div>
           {existing && (
             <p className="mt-4 text-sm text-muted-foreground">
               Já existe uma avaliação neste mês. Ao salvar, você atualiza este
@@ -829,21 +1006,21 @@ function Evolution({
                 <div key={key} className="rounded-2xl bg-secondary p-4">
                   <p className="text-sm text-muted-foreground">{label}</p>
                   <p className="my-2 text-xl font-bold">
-                    {current[key] == null
+                    {measurementValue(current, key) == null
                       ? '—'
-                      : `${number(current[key]!)} ${unit}`}
+                      : `${number(measurementValue(current, key)!)} ${unit}`}
                   </p>
                   <Delta
-                    current={current[key]}
-                    previous={previous?.[key]}
+                    current={measurementValue(current, key)}
+                    previous={measurementValue(previous, key)}
                     unit={unit}
                   />
                   {first && first.month !== current.month && (
                     <p className="mt-2 text-xs text-muted-foreground">
                       Desde {monthLabel(first.month)}:{' '}
                       <Delta
-                        current={current[key]}
-                        previous={first[key]}
+                        current={measurementValue(current, key)}
+                        previous={measurementValue(first, key)}
                         unit={unit}
                       />
                     </p>

@@ -11,17 +11,34 @@ const code = ts.transpileModule(source, {
 }).outputText;
 const context = { exports: {}, Date };
 vm.runInNewContext(code, context);
-const { parseMeasurement, parseLoad, compare, comparableLoads } =
-  context.exports;
+const {
+  parseMeasurement,
+  parseLoad,
+  compare,
+  comparableLoads,
+  measurementValue,
+  measureFields,
+} = context.exports;
 const body = parseMeasurement({
   month: '2026-01',
   weight: '80,5',
   height: '175',
   waist: '',
+  armLeft: '36,2',
+  armRight: '36,8',
+  chestRelaxed: '101',
+  chestInspired: '106,5',
 });
 assert.equal(body.weight, 80.5);
 assert.equal(body.waist, null);
 assert.equal(body.id, '2026-01');
+assert.equal(body.armLeft, 36.2);
+assert.equal(body.armRight, 36.8);
+assert.equal(body.chestRelaxed, 101);
+assert.equal(body.chestInspired, 106.5);
+assert.equal(new Set(measureFields.map((field) => field[0])).size, 17);
+assert.equal(measurementValue({ arm: 35 }, 'armRight'), 35);
+assert.equal(measurementValue({ chest: 100 }, 'chestRelaxed'), 100);
 assert.throws(() =>
   parseMeasurement({ month: '2026-13', weight: 80, height: 175 }),
 );
