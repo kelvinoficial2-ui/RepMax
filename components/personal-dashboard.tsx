@@ -223,141 +223,107 @@ const anatomyLabels = Object.fromEntries(
   measureFields.map(([key, label]) => [key, label]),
 );
 
+const anatomyFocus: Record<
+  string,
+  { size: string; position: string; description: string }
+> = {
+  weight: { size: 'contain', position: 'center', description: 'Corpo inteiro' },
+  height: {
+    size: 'contain',
+    position: 'center',
+    description: 'Do topo da cabeça aos pés',
+  },
+  neck: { size: '190%', position: '50% 7%', description: 'Base do pescoço' },
+  shoulders: {
+    size: '165%',
+    position: '50% 15%',
+    description: 'Parte mais larga dos ombros',
+  },
+  chest: {
+    size: '175%',
+    position: '50% 25%',
+    description: 'Linha do peito ao redor do tórax',
+  },
+  waist: {
+    size: '185%',
+    position: '50% 38%',
+    description: 'Parte mais estreita do tronco',
+  },
+  abdomen: {
+    size: '185%',
+    position: '50% 44%',
+    description: 'Linha do umbigo',
+  },
+  hip: {
+    size: '170%',
+    position: '50% 52%',
+    description: 'Parte mais larga do quadril',
+  },
+  armLeft: { size: '175%', position: '78% 27%', description: 'Braço esquerdo' },
+  armRight: { size: '175%', position: '22% 27%', description: 'Braço direito' },
+  forearmLeft: {
+    size: '175%',
+    position: '85% 39%',
+    description: 'Antebraço esquerdo',
+  },
+  forearmRight: {
+    size: '175%',
+    position: '15% 39%',
+    description: 'Antebraço direito',
+  },
+  thighLeft: {
+    size: '155%',
+    position: '62% 66%',
+    description: 'Coxa esquerda',
+  },
+  thighRight: {
+    size: '155%',
+    position: '38% 66%',
+    description: 'Coxa direita',
+  },
+  calfLeft: {
+    size: '150%',
+    position: '62% 86%',
+    description: 'Panturrilha esquerda',
+  },
+  calfRight: {
+    size: '150%',
+    position: '38% 86%',
+    description: 'Panturrilha direita',
+  },
+};
+
 function AnatomyMap({ selected }: { selected: string }) {
-  const active = (...regions: string[]) => regions.includes(selected);
-  const zone = (isActive: boolean) =>
-    isActive
-      ? 'fill-primary stroke-primary [filter:drop-shadow(0_0_8px_rgb(38_215_198/.85))]'
-      : 'fill-transparent stroke-transparent';
+  const region =
+    measureFields.find(([key]) => key === selected)?.[4] || selected;
+  const focus = anatomyFocus[region] || anatomyFocus.weight;
   return (
-    <aside className="sticky top-4 rounded-2xl bg-[#071619] p-4 ring-1 ring-primary/20">
+    <aside className="sticky top-[max(4.5rem,env(safe-area-inset-top))] z-10 order-first overflow-hidden rounded-2xl bg-black ring-1 ring-primary/25 lg:order-last lg:top-4">
       <div className="text-center">
-        <p className="text-xs font-bold tracking-[0.18em] text-primary uppercase">
-          Mapa corporal
+        <p className="px-4 pt-4 text-xs font-bold tracking-[0.18em] text-primary uppercase">
+          Local da medida
         </p>
-        <p className="mt-1 min-h-10 text-sm font-semibold">
+        <p className="mt-1 px-4 text-sm font-semibold">
           {anatomyLabels[selected] || 'Selecione uma medida'}
         </p>
       </div>
-      <svg
-        viewBox="0 0 220 420"
+      <div
         role="img"
-        aria-label={`Região destacada: ${anatomyLabels[selected] || 'nenhuma'}`}
-        className="mx-auto mt-2 h-auto w-full max-w-56"
+        aria-label={`Foco anatômico: ${anatomyLabels[selected] || 'corpo inteiro'}`}
+        className="relative mt-3 h-52 overflow-hidden bg-black bg-no-repeat transition-[background-size,background-position] duration-500 ease-out sm:h-64 lg:h-[32rem]"
+        style={{
+          backgroundImage: "url('/body-anatomy-v1.webp')",
+          backgroundSize: focus.size,
+          backgroundPosition: focus.position,
+        }}
       >
-        <defs>
-          <linearGradient id="bodyScan" x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#254248" />
-            <stop offset="1" stopColor="#10282d" />
-          </linearGradient>
-          <pattern
-            id="scanLines"
-            width="8"
-            height="8"
-            patternUnits="userSpaceOnUse"
-          >
-            <path d="M0 1h8" stroke="#26d7c6" strokeOpacity=".1" />
-          </pattern>
-        </defs>
-        <g fill="url(#bodyScan)" stroke="#416269" strokeWidth="2">
-          <circle cx="110" cy="35" r="25" />
-          <rect x="99" y="58" width="22" height="25" rx="9" />
-          <path d="M78 82Q110 68 142 82l12 79-18 73H84l-18-73z" />
-          <path d="M75 88 48 101 30 191l19 5 28-72z" />
-          <path d="m145 88 27 13 18 90-19 5-28-72z" />
-          <path d="M87 230 70 301l5 105h24l11-104 1-72z" />
-          <path d="m133 230 17 71-5 105h-24l-11-104-1-72z" />
-        </g>
-        <g fill="url(#scanLines)" opacity=".9">
-          <circle cx="110" cy="35" r="23" />
-          <path d="M80 84Q110 71 140 84l11 76-17 70H86l-17-70z" />
-        </g>
-        <g className="transition-all duration-300" strokeWidth="2">
-          <rect
-            className={zone(active('neck'))}
-            x="97"
-            y="57"
-            width="26"
-            height="28"
-            rx="10"
-          />
-          <path
-            className={zone(active('shoulders'))}
-            d="M69 91Q110 66 151 91l-7 29q-34-20-68 0z"
-          />
-          <path
-            className={zone(active('chestRelaxed', 'chestInspired'))}
-            d="M80 112q30-17 60 0l5 39q-35 15-70 0z"
-          />
-          <rect
-            className={zone(active('waist'))}
-            x="82"
-            y="155"
-            width="56"
-            height="24"
-            rx="10"
-          />
-          <rect
-            className={zone(active('abdomen'))}
-            x="84"
-            y="177"
-            width="52"
-            height="32"
-            rx="12"
-          />
-          <path
-            className={zone(active('hip'))}
-            d="M84 207h52l6 27q-32 18-64 0z"
-          />
-          <path
-            className={zone(active('armRight'))}
-            d="m72 94-22 10-10 43 19 5 17-35z"
-          />
-          <path
-            className={zone(active('forearmRight'))}
-            d="m40 145-11 47 20 5 12-48z"
-          />
-          <path
-            className={zone(active('armLeft'))}
-            d="m148 94 22 10 10 43-19 5-17-35z"
-          />
-          <path
-            className={zone(active('forearmLeft'))}
-            d="m180 145 11 47-20 5-12-48z"
-          />
-          <path
-            className={zone(active('thighRight'))}
-            d="M86 232h25l-8 72-32-4z"
-          />
-          <path
-            className={zone(active('thighLeft'))}
-            d="M109 232h25l15 68-32 4z"
-          />
-          <path
-            className={zone(active('calfRight'))}
-            d="m71 300 32 3-5 101H76z"
-          />
-          <path
-            className={zone(active('calfLeft'))}
-            d="m117 303 32-3-5 104h-22z"
-          />
-          <circle
-            className={zone(active('weight', 'height'))}
-            cx="110"
-            cy="205"
-            r="91"
-            strokeDasharray="7 8"
-          />
-        </g>
-        <path
-          d="M110 12v394"
-          stroke="#26d7c6"
-          strokeOpacity=".12"
-          strokeDasharray="3 8"
-        />
-      </svg>
-      <p className="mt-2 text-center text-xs text-muted-foreground">
-        Esquerdo e direito consideram o lado da pessoa ilustrada.
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgb(0_0_0/.62)_100%)]" />
+        {region !== 'weight' && region !== 'height' && (
+          <div className="pointer-events-none absolute top-1/2 left-1/2 h-20 w-28 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border-2 border-primary/80 shadow-[0_0_28px_rgb(38_215_198/.55),inset_0_0_22px_rgb(38_215_198/.2)]" />
+        )}
+      </div>
+      <p className="min-h-14 px-4 py-3 text-center text-xs text-muted-foreground">
+        {focus.description}. Esquerdo e direito consideram o lado da pessoa.
       </p>
     </aside>
   );
@@ -416,7 +382,10 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
           className="mt-5"
         >
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-            <fieldset disabled={busy} className="space-y-4">
+            <fieldset
+              disabled={busy}
+              className="order-last min-w-0 space-y-4 lg:order-first"
+            >
               {[...new Set(measureFields.map((field) => field[3]))].map(
                 (group) => (
                   <section
@@ -424,25 +393,27 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
                     className="rounded-2xl bg-secondary/55 p-4 ring-1 ring-border"
                   >
                     <h3 className="mb-3 font-bold text-primary">{group}</h3>
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       {measureFields
                         .filter((field) => field[3] === group)
                         .map(([key, label, unit]) => (
                           <div
                             key={key}
-                            className={
+                            className={`min-w-0 scroll-mt-80 ${
                               selectedMeasure === key
-                                ? 'rounded-xl ring-2 ring-primary'
+                                ? 'rounded-xl ring-2 ring-primary/80'
                                 : 'rounded-xl'
-                            }
+                            }`}
                           >
                             <Field
                               label={`${label} (${unit})${key === 'weight' || key === 'height' ? ' *' : ''}`}
                             >
                               <Input
-                                className="h-12"
+                                className="h-12 w-full min-w-0 text-base"
                                 name={key}
+                                type="text"
                                 inputMode="decimal"
+                                autoComplete="off"
                                 defaultValue={
                                   measurementValue(existing, key) ?? ''
                                 }
