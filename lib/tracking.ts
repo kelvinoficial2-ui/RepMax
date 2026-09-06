@@ -50,6 +50,7 @@ export const bases = [
   'kg total da barra',
   'kg indicado na máquina',
   'kg adicional',
+  'kg total',
 ] as const;
 export const measureFields = [
   ['weight', 'Peso', 'kg'],
@@ -141,6 +142,12 @@ export const initialExercises: Exercise[] = [
     category: 'Ombros',
   },
   {
+    id: 'elevacao-frontal-anilha',
+    name: 'Elevação frontal com anilha',
+    equipment: 'Anilha',
+    category: 'Ombros',
+  },
+  {
     id: 'cadeira-extensora',
     name: 'Cadeira extensora',
     equipment: 'Cadeira extensora',
@@ -198,6 +205,7 @@ export function defaultLoadBasis(exercise: Exercise) {
   )
     return bases[2];
   if (exercise.id === 'panturrilha-sentada-maquina') return bases[4];
+  if (exercise.id === 'elevacao-frontal-anilha') return bases[5];
   return exercise.equipment.toLowerCase().includes('halter')
     ? bases[0]
     : bases[3];

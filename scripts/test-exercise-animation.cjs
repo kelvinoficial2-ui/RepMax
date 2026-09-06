@@ -65,6 +65,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660932/avatares/download_5.gif',
   'face-pull-polia-corda':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660934/avatares/download_4.gif',
+  'elevacao-frontal-anilha':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663163/avatares/How_To_Do_Weight_Plate_Front_Raise_-_Benefits_Muscles_Worked.gif',
   'crucifixo-polia-alta':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
   'rosca-concentrada-halteres':
@@ -191,6 +193,13 @@ const facePull = tracking.initialExercises.find(
 assert.equal(facePull.name, 'Face pull na polia com corda');
 assert.equal(facePull.category, 'Ombros');
 assert.equal(facePull.equipment, 'Polia alta com corda');
+const plateFrontRaise = tracking.initialExercises.find(
+  (e) => e.id === 'elevacao-frontal-anilha',
+);
+assert.equal(plateFrontRaise.name, 'Elevação frontal com anilha');
+assert.equal(plateFrontRaise.category, 'Ombros');
+assert.equal(plateFrontRaise.equipment, 'Anilha');
+assert.equal(tracking.defaultLoadBasis(plateFrontRaise), 'kg total');
 const standingLateralRaise = tracking.initialExercises.find(
   (e) => e.id === 'elevacao-lateral',
 );

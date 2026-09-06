@@ -97,6 +97,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'elevacao-frontal-anilha': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663163/avatares/How_To_Do_Weight_Plate_Front_Raise_-_Benefits_Muscles_Worked.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'elevacao-lateral': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660649/avatares/download_2.gif',
     animatedGif: true,
