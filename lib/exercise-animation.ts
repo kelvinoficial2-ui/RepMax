@@ -55,8 +55,22 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'barra-fixa-assistida-maquina': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660932/avatares/download_5.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'remada-alta-halteres': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/REMADA_ALTA_COM_HALTERES.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
+  'face-pull-polia-corda': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660934/avatares/download_4.gif',
     animatedGif: true,
     cellSize: 1,
     columns: 1,

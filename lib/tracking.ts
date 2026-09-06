@@ -105,6 +105,12 @@ export const initialExercises: Exercise[] = [
     category: 'Costas',
   },
   {
+    id: 'barra-fixa-assistida-maquina',
+    name: 'Barra fixa assistida na máquina',
+    equipment: 'Máquina de barra fixa assistida (peso de auxílio)',
+    category: 'Costas',
+  },
+  {
     id: 'elevacao-lateral',
     name: 'Elevação lateral em pé com halteres',
     equipment: 'Halteres',
@@ -120,6 +126,12 @@ export const initialExercises: Exercise[] = [
     id: 'remada-alta-halteres',
     name: 'Remada alta com halteres',
     equipment: 'Halteres',
+    category: 'Ombros',
+  },
+  {
+    id: 'face-pull-polia-corda',
+    name: 'Face pull na polia com corda',
+    equipment: 'Polia alta com corda',
     category: 'Ombros',
   },
   {

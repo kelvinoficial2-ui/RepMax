@@ -57,6 +57,10 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
   'encolhimento-halteres':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/ENCOLHIMENTO_COM_ALTERES.gif',
+  'barra-fixa-assistida-maquina':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660932/avatares/download_5.gif',
+  'face-pull-polia-corda':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660934/avatares/download_4.gif',
   'crucifixo-polia-alta':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
   'rosca-concentrada-halteres':
@@ -120,12 +124,28 @@ const shrug = tracking.initialExercises.find(
 assert.equal(shrug.category, 'Costas');
 assert.equal(shrug.equipment, 'Halteres');
 assert.equal(tracking.defaultLoadBasis(shrug), 'kg por halter');
+const assistedPullUp = tracking.initialExercises.find(
+  (e) => e.id === 'barra-fixa-assistida-maquina',
+);
+assert.equal(assistedPullUp.name, 'Barra fixa assistida na máquina');
+assert.equal(assistedPullUp.category, 'Costas');
+assert.match(assistedPullUp.equipment, /peso de auxílio/);
+assert.equal(
+  tracking.defaultLoadBasis(assistedPullUp),
+  'kg indicado na máquina',
+);
 const uprightRow = tracking.initialExercises.find(
   (e) => e.id === 'remada-alta-halteres',
 );
 assert.equal(uprightRow.category, 'Ombros');
 assert.equal(uprightRow.equipment, 'Halteres');
 assert.equal(tracking.defaultLoadBasis(uprightRow), 'kg por halter');
+const facePull = tracking.initialExercises.find(
+  (e) => e.id === 'face-pull-polia-corda',
+);
+assert.equal(facePull.name, 'Face pull na polia com corda');
+assert.equal(facePull.category, 'Ombros');
+assert.equal(facePull.equipment, 'Polia alta com corda');
 const standingLateralRaise = tracking.initialExercises.find(
   (e) => e.id === 'elevacao-lateral',
 );
