@@ -153,6 +153,12 @@ export const initialExercises: Exercise[] = [
     category: 'Pernas',
   },
   {
+    id: 'avanco-frente-halteres',
+    name: 'Avanço à frente com halteres',
+    equipment: 'Halteres',
+    category: 'Pernas',
+  },
+  {
     id: 'rosca-concentrada-halteres',
     name: 'Rosca concentrada com halter',
     equipment: 'Halter',

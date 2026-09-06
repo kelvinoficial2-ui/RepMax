@@ -53,6 +53,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788660703/avatares/download_3.gif',
   'panturrilha-sentada-maquina':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/PANTURRILHA.gif',
+  'avanco-frente-halteres':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788662664/avatares/download_7.gif',
   'supino-inclinado':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
   'triceps-testa-inclinado-barra-w':
@@ -154,6 +156,13 @@ const calfRaise = tracking.initialExercises.find(
 assert.equal(calfRaise.category, 'Pernas');
 assert.equal(calfRaise.equipment, 'Máquina de panturrilha sentada');
 assert.equal(tracking.defaultLoadBasis(calfRaise), 'kg adicional');
+const dumbbellLunge = tracking.initialExercises.find(
+  (e) => e.id === 'avanco-frente-halteres',
+);
+assert.equal(dumbbellLunge.name, 'Avanço à frente com halteres');
+assert.equal(dumbbellLunge.category, 'Pernas');
+assert.equal(dumbbellLunge.equipment, 'Halteres');
+assert.equal(tracking.defaultLoadBasis(dumbbellLunge), 'kg por halter');
 const shrug = tracking.initialExercises.find(
   (e) => e.id === 'encolhimento-halteres',
 );

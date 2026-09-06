@@ -132,6 +132,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'avanco-frente-halteres': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788662664/avatares/download_7.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'crucifixo-polia-alta': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
     animatedGif: true,
