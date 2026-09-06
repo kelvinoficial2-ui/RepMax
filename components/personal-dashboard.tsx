@@ -225,70 +225,82 @@ const anatomyLabels = Object.fromEntries(
 
 const anatomyFocus: Record<
   string,
-  { size: string; position: string; description: string }
+  { scale: number; x: number; y: number; description: string }
 > = {
-  weight: { size: 'contain', position: 'center', description: 'Corpo inteiro' },
+  weight: { scale: 1, x: 50, y: 50, description: 'Corpo inteiro' },
   height: {
-    size: 'contain',
-    position: 'center',
+    scale: 1,
+    x: 50,
+    y: 50,
     description: 'Do topo da cabeça aos pés',
   },
-  neck: { size: '190%', position: '50% 7%', description: 'Base do pescoço' },
+  neck: { scale: 2.05, x: 50, y: 14, description: 'Base do pescoço' },
   shoulders: {
-    size: '165%',
-    position: '50% 15%',
+    scale: 1.85,
+    x: 50,
+    y: 20,
     description: 'Parte mais larga dos ombros',
   },
   chest: {
-    size: '175%',
-    position: '50% 25%',
+    scale: 1.95,
+    x: 50,
+    y: 28,
     description: 'Linha do peito ao redor do tórax',
   },
   waist: {
-    size: '185%',
-    position: '50% 38%',
+    scale: 2.1,
+    x: 50,
+    y: 40,
     description: 'Parte mais estreita do tronco',
   },
   abdomen: {
-    size: '185%',
-    position: '50% 44%',
+    scale: 2.1,
+    x: 50,
+    y: 45,
     description: 'Linha do umbigo',
   },
   hip: {
-    size: '170%',
-    position: '50% 52%',
+    scale: 1.9,
+    x: 50,
+    y: 52,
     description: 'Parte mais larga do quadril',
   },
-  armLeft: { size: '175%', position: '78% 27%', description: 'Braço esquerdo' },
-  armRight: { size: '175%', position: '22% 27%', description: 'Braço direito' },
+  armLeft: { scale: 1.95, x: 73, y: 29, description: 'Braço esquerdo' },
+  armRight: { scale: 1.95, x: 27, y: 29, description: 'Braço direito' },
   forearmLeft: {
-    size: '175%',
-    position: '85% 39%',
+    scale: 2.05,
+    x: 82,
+    y: 41,
     description: 'Antebraço esquerdo',
   },
   forearmRight: {
-    size: '175%',
-    position: '15% 39%',
+    scale: 2.05,
+    x: 18,
+    y: 41,
     description: 'Antebraço direito',
   },
   thighLeft: {
-    size: '155%',
-    position: '62% 66%',
+    scale: 1.75,
+    x: 59,
+    y: 65,
     description: 'Coxa esquerda',
   },
   thighRight: {
-    size: '155%',
-    position: '38% 66%',
+    scale: 1.75,
+    x: 41,
+    y: 65,
     description: 'Coxa direita',
   },
   calfLeft: {
-    size: '150%',
-    position: '62% 86%',
+    scale: 1.7,
+    x: 59,
+    y: 82,
     description: 'Panturrilha esquerda',
   },
   calfRight: {
-    size: '150%',
-    position: '38% 86%',
+    scale: 1.7,
+    x: 41,
+    y: 82,
     description: 'Panturrilha direita',
   },
 };
@@ -310,17 +322,32 @@ function AnatomyMap({ selected }: { selected: string }) {
       <div
         role="img"
         aria-label={`Foco anatômico: ${anatomyLabels[selected] || 'corpo inteiro'}`}
-        className="relative mt-3 h-52 overflow-hidden bg-black bg-no-repeat transition-[background-size,background-position] duration-500 ease-out sm:h-64 lg:h-[32rem]"
-        style={{
-          backgroundImage: "url('/body-anatomy-v1.webp')",
-          backgroundSize: focus.size,
-          backgroundPosition: focus.position,
-        }}
+        className="relative mt-3 h-52 overflow-hidden bg-black sm:h-64 lg:h-[32rem]"
       >
+        <div
+          className="absolute top-1/2 left-1/2 h-[92%] aspect-[2/3] -translate-x-1/2 -translate-y-1/2 transition-transform duration-500 ease-out"
+          style={{
+            transform: `translate(-50%, -50%) scale(${focus.scale})`,
+            transformOrigin: `${focus.x}% ${focus.y}%`,
+          }}
+        >
+          <img
+            src="/body-anatomy-v1.webp"
+            alt=""
+            className="h-full w-full object-cover"
+          />
+          {region !== 'weight' && region !== 'height' && (
+            <div
+              className="pointer-events-none absolute h-14 w-20 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border-2 border-primary shadow-[0_0_24px_rgb(38_215_198/.75),inset_0_0_18px_rgb(38_215_198/.2)]"
+              style={{
+                left: `${focus.x}%`,
+                top: `${focus.y}%`,
+                transform: `translate(-50%, -50%) scale(${1 / focus.scale})`,
+              }}
+            />
+          )}
+        </div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_35%,rgb(0_0_0/.62)_100%)]" />
-        {region !== 'weight' && region !== 'height' && (
-          <div className="pointer-events-none absolute top-1/2 left-1/2 h-20 w-28 -translate-x-1/2 -translate-y-1/2 rounded-[50%] border-2 border-primary/80 shadow-[0_0_28px_rgb(38_215_198/.55),inset_0_0_22px_rgb(38_215_198/.2)]" />
-        )}
       </div>
       <p className="min-h-14 px-4 py-3 text-center text-xs text-muted-foreground">
         {focus.description}. Esquerdo e direito consideram o lado da pessoa.
@@ -397,14 +424,7 @@ function BodyMeasurements({ records }: { records: Measurement[] }) {
                       {measureFields
                         .filter((field) => field[3] === group)
                         .map(([key, label, unit]) => (
-                          <div
-                            key={key}
-                            className={`min-w-0 scroll-mt-80 ${
-                              selectedMeasure === key
-                                ? 'rounded-xl ring-2 ring-primary/80'
-                                : 'rounded-xl'
-                            }`}
-                          >
+                          <div key={key} className="min-w-0 scroll-mt-80">
                             <Field
                               label={`${label} (${unit})${key === 'weight' || key === 'height' ? ' *' : ''}`}
                             >
