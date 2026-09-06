@@ -1,5 +1,6 @@
 type ExerciseAnimation = {
   src: string;
+  animatedGif?: boolean;
   cellSize: number;
   columns: number;
   upwardPoses: number[];
@@ -8,13 +9,6 @@ type ExerciseAnimation = {
     y: number;
     width: number;
     height: number;
-    maxLift: number;
-  };
-  synchronizedWeightStacks?: {
-    x: number[];
-    stackWidth: number;
-    stackHeight: number;
-    baseBottom: number;
     maxLift: number;
   };
 };
@@ -41,17 +35,11 @@ const animations: Record<string, ExerciseAnimation> = {
     movingWeight: { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
   },
   'crucifixo-polia-alta': {
-    src: '/exercises/crucifixo-polia-alta-v3.jpg',
-    cellSize: 362,
-    columns: 4,
-    upwardPoses: [0, 1, 2, 3, 4],
-    synchronizedWeightStacks: {
-      x: [72, 283],
-      stackWidth: 24,
-      stackHeight: 50,
-      baseBottom: 282,
-      maxLift: 62,
-    },
+    src: '/exercises/crucifixo-polia-alta.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
   },
 };
 

@@ -8,6 +8,27 @@ import {
 } from '@/lib/exercise-animation';
 
 export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
+  const animation = exerciseAnimation(exerciseId)!;
+  if (animation.animatedGif) {
+    return (
+      <div className="my-4 overflow-hidden rounded-2xl bg-white">
+        {/* The original animated GIF must remain an img; canvas would drop its animation. */}
+        {/* oxlint-disable-next-line next/no-img-element */}
+        <img
+          src={animation.src}
+          alt="Demonstração animada do exercício selecionado."
+          className="mx-auto block aspect-square w-full max-w-lg object-contain"
+        />
+        <div className="bg-[#061316] p-4 text-right">
+          <p className="text-xs text-[#bed3d4]">Referência de movimento</p>
+        </div>
+      </div>
+    );
+  }
+  return <SpriteExerciseDemonstration exerciseId={exerciseId} />;
+}
+
+function SpriteExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
   const animation = useMemo(() => exerciseAnimation(exerciseId)!, [exerciseId]);
   const canvas = useRef<HTMLCanvasElement>(null);
   const image = useRef<HTMLImageElement | null>(null);
@@ -57,36 +78,8 @@ export function ExerciseDemonstration({ exerciseId }: { exerciseId: string }) {
           weight.height * scale,
         );
       }
-      const stacks = animation.synchronizedWeightStacks;
-      if (!stacks) return;
-      const lift = stacks.maxLift * frame.progress;
-      for (const x of stacks.x) {
-        const stackLeft = x * scale;
-        const stackTop =
-          (stacks.baseBottom - stacks.stackHeight - lift) * scale;
-        const stackWidth = stacks.stackWidth * scale;
-        const plateHeight = 5 * scale;
-        const gap = 1.2 * scale;
-        for (
-          let plateTop = stackTop;
-          plateTop < stackTop + stacks.stackHeight * scale;
-          plateTop += plateHeight + gap
-        ) {
-          context.fillStyle = '#111719';
-          context.fillRect(stackLeft, plateTop, stackWidth, plateHeight);
-          context.strokeStyle = '#354247';
-          context.strokeRect(stackLeft, plateTop, stackWidth, plateHeight);
-        }
-        context.fillStyle = '#29d8ca';
-        context.fillRect(
-          stackLeft + stackWidth * 0.58,
-          stackTop + plateHeight * 2.2,
-          3 * scale,
-          2 * scale,
-        );
-      }
     },
-    [animation.movingWeight, animation.synchronizedWeightStacks, exerciseId],
+    [animation.movingWeight, exerciseId],
   );
 
   useEffect(() => {

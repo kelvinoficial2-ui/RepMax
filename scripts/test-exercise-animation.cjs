@@ -22,7 +22,6 @@ for (const [id, width, height, poseCount] of [
   ['supino-reto-halteres', 1448, 1086, 8],
   ['rosca-concentrada-halteres', 1672, 1254, 12],
   ['abdominal-polia-alta-em-pe', 1448, 1086, 12],
-  ['crucifixo-polia-alta', 1448, 1086, 5],
 ]) {
   const definition = animation.exerciseAnimation(id);
   assert(definition);
@@ -45,13 +44,21 @@ assert.equal(
 );
 assert.equal(
   animation.exerciseAnimation('crucifixo-polia-alta').src,
-  '/exercises/crucifixo-polia-alta-v3.jpg',
+  '/exercises/crucifixo-polia-alta.gif',
 );
-const crossoverStacks = animation.exerciseAnimation(
-  'crucifixo-polia-alta',
-).synchronizedWeightStacks;
-assert.deepEqual([...crossoverStacks.x], [72, 283]);
-assert.equal(crossoverStacks.maxLift, 62);
+assert.equal(
+  animation.exerciseAnimation('crucifixo-polia-alta').animatedGif,
+  true,
+);
+const crossoverGif = fs.readFileSync(
+  'public/exercises/crucifixo-polia-alta.gif',
+);
+assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
+assert(
+  fs
+    .readFileSync('dist/exercises/crucifixo-polia-alta.gif')
+    .equals(crossoverGif),
+);
 const movingWeight = animation.exerciseAnimation(
   'abdominal-polia-alta-em-pe',
 ).movingWeight;
