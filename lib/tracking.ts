@@ -99,6 +99,12 @@ export const initialExercises: Exercise[] = [
     category: 'Tríceps',
   },
   {
+    id: 'triceps-testa-inclinado-barra-w',
+    name: 'Tríceps testa no banco inclinado com barra W',
+    equipment: 'Barra W e banco inclinado',
+    category: 'Tríceps',
+  },
+  {
     id: 'encolhimento-halteres',
     name: 'Encolhimento com halteres',
     equipment: 'Halteres',
@@ -175,7 +181,8 @@ export function defaultLoadBasis(exercise: Exercise) {
   if (exercise.id === 'crucifixo-polia-alta') return bases[1];
   if (
     exercise.id === 'supino-reto-barra' ||
-    exercise.id === 'rosca-inversa-barra-reta'
+    exercise.id === 'rosca-inversa-barra-reta' ||
+    exercise.id === 'triceps-testa-inclinado-barra-w'
   )
     return bases[2];
   if (exercise.id === 'panturrilha-sentada-maquina') return bases[4];

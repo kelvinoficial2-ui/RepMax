@@ -34,6 +34,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'triceps-testa-inclinado-barra-w': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661228/avatares/How_To_Perform_The_Incline_EZ-Bar_Triceps_Extension.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'rosca-concentrada-halteres': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659171/avatares/ROSCA_CONCENTRADA_COM_HALTERES.gif',
     animatedGif: true,

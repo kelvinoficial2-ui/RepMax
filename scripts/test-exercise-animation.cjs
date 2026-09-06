@@ -55,6 +55,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/PANTURRILHA.gif',
   'supino-inclinado':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
+  'triceps-testa-inclinado-barra-w':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661228/avatares/How_To_Perform_The_Incline_EZ-Bar_Triceps_Extension.gif',
   'encolhimento-halteres':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/ENCOLHIMENTO_COM_ALTERES.gif',
   'barra-fixa-assistida-maquina':
@@ -91,6 +93,19 @@ const barbellBench = tracking.initialExercises.find(
 assert.equal(barbellBench.category, 'Peito');
 assert.equal(barbellBench.equipment, 'Barra e banco reto');
 assert.equal(tracking.defaultLoadBasis(barbellBench), 'kg total da barra');
+const inclineSkullCrusher = tracking.initialExercises.find(
+  (e) => e.id === 'triceps-testa-inclinado-barra-w',
+);
+assert.equal(
+  inclineSkullCrusher.name,
+  'Tríceps testa no banco inclinado com barra W',
+);
+assert.equal(inclineSkullCrusher.category, 'Tríceps');
+assert.equal(inclineSkullCrusher.equipment, 'Barra W e banco inclinado');
+assert.equal(
+  tracking.defaultLoadBasis(inclineSkullCrusher),
+  'kg total da barra',
+);
 assert.equal(
   tracking.initialExercises.find((e) => e.id === 'rosca-concentrada-halteres')
     .category,
