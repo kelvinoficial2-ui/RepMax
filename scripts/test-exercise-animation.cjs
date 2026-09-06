@@ -69,6 +69,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663163/avatares/How_To_Do_Weight_Plate_Front_Raise_-_Benefits_Muscles_Worked.gif',
   'crucifixo-polia-alta':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659235/avatares/CRUCIFIXO_NA_POLIA.gif',
+  'crucifixo-maquina-peck-deck':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663356/avatares/How_To_Machine_Chest_Fly_To_Build_Bigger_Pecs.gif',
   'rosca-concentrada-halteres':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659171/avatares/ROSCA_CONCENTRADA_COM_HALTERES.gif',
   'rosca-inversa-barra-reta':
@@ -217,6 +219,13 @@ const crossover = tracking.initialExercises.find(
 assert.equal(crossover.category, 'Peito');
 assert.equal(crossover.equipment, 'Crossover / polia dupla');
 assert.equal(tracking.defaultLoadBasis(crossover), 'kg por lado');
+const machineFly = tracking.initialExercises.find(
+  (e) => e.id === 'crucifixo-maquina-peck-deck',
+);
+assert.equal(machineFly.name, 'Crucifixo na máquina (peck deck)');
+assert.equal(machineFly.category, 'Peito');
+assert.equal(machineFly.equipment, 'Máquina peck deck');
+assert.equal(tracking.defaultLoadBasis(machineFly), 'kg indicado na máquina');
 assert.equal(
   new Set(tracking.initialExercises.map((e) => e.id)).size,
   tracking.initialExercises.length,

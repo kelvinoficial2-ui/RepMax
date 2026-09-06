@@ -94,6 +94,12 @@ export const initialExercises: Exercise[] = [
     category: 'Peito',
   },
   {
+    id: 'crucifixo-maquina-peck-deck',
+    name: 'Crucifixo na máquina (peck deck)',
+    equipment: 'Máquina peck deck',
+    category: 'Peito',
+  },
+  {
     id: 'triceps-polia',
     name: 'Tríceps na polia',
     equipment: 'Polia',

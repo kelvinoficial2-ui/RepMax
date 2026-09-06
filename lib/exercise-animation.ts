@@ -153,6 +153,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'crucifixo-maquina-peck-deck': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663356/avatares/How_To_Machine_Chest_Fly_To_Build_Bigger_Pecs.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
 };
 
 export const EXERCISE_FRAME_MS = 125;
