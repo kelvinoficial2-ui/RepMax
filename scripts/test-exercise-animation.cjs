@@ -59,6 +59,14 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
   'supino-inclinado-maquina-articulada':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663569/avatares/Lever_Incline_Chest_Press_Overview___Form_Tips_Benefits_1.gif',
+  'supino-declinado-maquina-articulada':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788664206/avatares/Decline_Chest_Press_Machine_Overview___Form_Tips_Benefits_1.gif',
+  'triceps-polia':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663728/avatares/Tr%C3%ADceps_Pulley.gif',
+  'triceps-frances-unilateral-sentado-halter':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663615/avatares/download_8.gif',
+  'triceps-testa-declinado-halteres':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663655/avatares/download_9.gif',
   'triceps-testa-inclinado-barra-w':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661228/avatares/How_To_Perform_The_Incline_EZ-Bar_Triceps_Extension.gif',
   'encolhimento-halteres':
@@ -104,6 +112,12 @@ assert.equal(leverInclinePress.name, 'Supino inclinado na máquina articulada');
 assert.equal(leverInclinePress.category, 'Peito');
 assert.equal(leverInclinePress.equipment, 'Máquina articulada com anilhas');
 assert.equal(tracking.defaultLoadBasis(leverInclinePress), 'kg por lado');
+const leverDeclinePress = tracking.initialExercises.find(
+  (e) => e.id === 'supino-declinado-maquina-articulada',
+);
+assert.equal(leverDeclinePress.name, 'Supino declinado na máquina articulada');
+assert.equal(leverDeclinePress.category, 'Peito');
+assert.equal(tracking.defaultLoadBasis(leverDeclinePress), 'kg por lado');
 const barbellBench = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-barra',
 );
@@ -122,6 +136,33 @@ assert.equal(inclineSkullCrusher.equipment, 'Barra W e banco inclinado');
 assert.equal(
   tracking.defaultLoadBasis(inclineSkullCrusher),
   'kg total da barra',
+);
+const cablePushdown = tracking.initialExercises.find(
+  (e) => e.id === 'triceps-polia',
+);
+assert.equal(cablePushdown.name, 'Tríceps na polia com barra reta');
+assert.equal(cablePushdown.category, 'Tríceps');
+assert.equal(cablePushdown.equipment, 'Polia alta com barra reta');
+const seatedOneArmExtension = tracking.initialExercises.find(
+  (e) => e.id === 'triceps-frances-unilateral-sentado-halter',
+);
+assert.equal(
+  seatedOneArmExtension.name,
+  'Tríceps francês unilateral sentado com halter',
+);
+assert.equal(seatedOneArmExtension.category, 'Tríceps');
+assert.equal(tracking.defaultLoadBasis(seatedOneArmExtension), 'kg por halter');
+const declineDumbbellExtension = tracking.initialExercises.find(
+  (e) => e.id === 'triceps-testa-declinado-halteres',
+);
+assert.equal(
+  declineDumbbellExtension.name,
+  'Tríceps testa declinado com halteres',
+);
+assert.equal(declineDumbbellExtension.category, 'Tríceps');
+assert.equal(
+  tracking.defaultLoadBasis(declineDumbbellExtension),
+  'kg por halter',
 );
 assert.equal(
   tracking.initialExercises.find((e) => e.id === 'rosca-concentrada-halteres')

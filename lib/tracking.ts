@@ -88,6 +88,12 @@ export const initialExercises: Exercise[] = [
     category: 'Peito',
   },
   {
+    id: 'supino-declinado-maquina-articulada',
+    name: 'Supino declinado na máquina articulada',
+    equipment: 'Máquina articulada com anilhas',
+    category: 'Peito',
+  },
+  {
     id: 'crucifixo',
     name: 'Crucifixo',
     equipment: 'Halteres',
@@ -107,8 +113,20 @@ export const initialExercises: Exercise[] = [
   },
   {
     id: 'triceps-polia',
-    name: 'Tríceps na polia',
-    equipment: 'Polia',
+    name: 'Tríceps na polia com barra reta',
+    equipment: 'Polia alta com barra reta',
+    category: 'Tríceps',
+  },
+  {
+    id: 'triceps-frances-unilateral-sentado-halter',
+    name: 'Tríceps francês unilateral sentado com halter',
+    equipment: 'Halter e banco',
+    category: 'Tríceps',
+  },
+  {
+    id: 'triceps-testa-declinado-halteres',
+    name: 'Tríceps testa declinado com halteres',
+    equipment: 'Halteres e banco declinado',
     category: 'Tríceps',
   },
   {
@@ -211,7 +229,8 @@ export const initialExercises: Exercise[] = [
 export function defaultLoadBasis(exercise: Exercise) {
   if (
     exercise.id === 'crucifixo-polia-alta' ||
-    exercise.id === 'supino-inclinado-maquina-articulada'
+    exercise.id === 'supino-inclinado-maquina-articulada' ||
+    exercise.id === 'supino-declinado-maquina-articulada'
   )
     return bases[1];
   if (
