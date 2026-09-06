@@ -65,6 +65,18 @@ assert.equal(
 const crossoverGif = fs.readFileSync(
   'public/exercises/crucifixo-polia-alta.gif',
 );
+const barbellBenchAnimation = animation.exerciseAnimation('supino-reto-barra');
+assert.equal(barbellBenchAnimation.src, '/exercises/supino-reto-barra.gif');
+assert.equal(barbellBenchAnimation.animatedGif, true);
+const barbellBenchGif = fs.readFileSync(
+  'public/exercises/supino-reto-barra.gif',
+);
+assert.equal(barbellBenchGif.subarray(0, 6).toString(), 'GIF89a');
+assert(
+  fs
+    .readFileSync('dist/exercises/supino-reto-barra.gif')
+    .equals(barbellBenchGif),
+);
 assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
   fs
@@ -80,6 +92,12 @@ const inclined = tracking.initialExercises.find(
 assert(flat && inclined && flat.id !== inclined.id);
 assert.equal(flat.equipment, 'Halteres');
 assert.equal(flat.category, 'Peito');
+const barbellBench = tracking.initialExercises.find(
+  (e) => e.id === 'supino-reto-barra',
+);
+assert.equal(barbellBench.category, 'Peito');
+assert.equal(barbellBench.equipment, 'Barra e banco reto');
+assert.equal(tracking.defaultLoadBasis(barbellBench), 'kg total da barra');
 assert.equal(
   tracking.initialExercises.find((e) => e.id === 'rosca-concentrada-halteres')
     .category,

@@ -20,6 +20,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 4,
     upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7],
   },
+  'supino-reto-barra': {
+    src: '/exercises/supino-reto-barra.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'rosca-concentrada-halteres': {
     src: '/exercises/rosca-concentrada-halteres-v1.jpg',
     cellSize: 418,

@@ -69,6 +69,12 @@ export const initialExercises: Exercise[] = [
     category: 'Peito',
   },
   {
+    id: 'supino-reto-barra',
+    name: 'Supino reto com barra',
+    equipment: 'Barra e banco reto',
+    category: 'Peito',
+  },
+  {
     id: 'supino-inclinado',
     name: 'Supino inclinado',
     equipment: 'Halteres',
@@ -113,6 +119,7 @@ export const initialExercises: Exercise[] = [
 ];
 export function defaultLoadBasis(exercise: Exercise) {
   if (exercise.id === 'crucifixo-polia-alta') return bases[1];
+  if (exercise.id === 'supino-reto-barra') return bases[2];
   return exercise.equipment.toLowerCase().includes('halter')
     ? bases[0]
     : bases[3];
