@@ -37,23 +37,28 @@ for (const [id, width, height, poseCount] of [
   assert(fs.readFileSync('dist' + definition.src).equals(asset));
 }
 assert.equal(animation.exerciseAnimation('sem-animacao'), null);
-assert.equal(
-  animation.exerciseAnimation('abdominal-polia-alta-em-pe').src,
-  '/exercises/abdominal-polia-alta-em-pe.gif',
-);
-assert.equal(
-  animation.exerciseAnimation('abdominal-polia-alta-em-pe').animatedGif,
-  true,
-);
-const abdominalGif = fs.readFileSync(
-  'public/exercises/abdominal-polia-alta-em-pe.gif',
-);
-assert.equal(abdominalGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/abdominal-polia-alta-em-pe.gif')
-    .equals(abdominalGif),
-);
+const cloudinaryGifs = {
+  'supino-reto-barra':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/SUPINO_BARRA.gif',
+  'abdominal-polia-alta-em-pe':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/ABDOMINAL_NA_POLIA.gif',
+  'cadeira-extensora':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
+  'remada-alta-halteres':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/REMADA_ALTA_COM_HALTERES.gif',
+  'panturrilha-sentada-maquina':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/PANTURRILHA.gif',
+  'supino-inclinado':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
+  'encolhimento-halteres':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/ENCOLHIMENTO_COM_ALTERES.gif',
+};
+for (const [id, src] of Object.entries(cloudinaryGifs)) {
+  const definition = animation.exerciseAnimation(id);
+  assert.equal(definition.src, src);
+  assert.equal(definition.animatedGif, true);
+  assert.equal(new URL(definition.src).hostname, 'res.cloudinary.com');
+}
 assert.equal(
   animation.exerciseAnimation('crucifixo-polia-alta').src,
   '/exercises/crucifixo-polia-alta.gif',
@@ -64,62 +69,6 @@ assert.equal(
 );
 const crossoverGif = fs.readFileSync(
   'public/exercises/crucifixo-polia-alta.gif',
-);
-const barbellBenchAnimation = animation.exerciseAnimation('supino-reto-barra');
-assert.equal(barbellBenchAnimation.src, '/exercises/supino-reto-barra.gif');
-assert.equal(barbellBenchAnimation.animatedGif, true);
-const barbellBenchGif = fs.readFileSync(
-  'public/exercises/supino-reto-barra.gif',
-);
-assert.equal(barbellBenchGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/supino-reto-barra.gif')
-    .equals(barbellBenchGif),
-);
-const legExtensionAnimation = animation.exerciseAnimation('cadeira-extensora');
-assert.equal(legExtensionAnimation.src, '/exercises/cadeira-extensora.gif');
-assert.equal(legExtensionAnimation.animatedGif, true);
-const legExtensionGif = fs.readFileSync(
-  'public/exercises/cadeira-extensora.gif',
-);
-assert.equal(legExtensionGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/cadeira-extensora.gif')
-    .equals(legExtensionGif),
-);
-const inclineAnimation = animation.exerciseAnimation('supino-inclinado');
-assert.equal(inclineAnimation.src, '/exercises/supino-inclinado-halteres.gif');
-assert.equal(inclineAnimation.animatedGif, true);
-const inclineGif = fs.readFileSync(
-  'public/exercises/supino-inclinado-halteres.gif',
-);
-assert.equal(inclineGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/supino-inclinado-halteres.gif')
-    .equals(inclineGif),
-);
-const shrugAnimation = animation.exerciseAnimation('encolhimento-halteres');
-assert.equal(shrugAnimation.src, '/exercises/encolhimento-halteres.gif');
-assert.equal(shrugAnimation.animatedGif, true);
-const shrugGif = fs.readFileSync('public/exercises/encolhimento-halteres.gif');
-assert.equal(shrugGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs.readFileSync('dist/exercises/encolhimento-halteres.gif').equals(shrugGif),
-);
-const uprightRowAnimation = animation.exerciseAnimation('remada-alta-halteres');
-assert.equal(uprightRowAnimation.src, '/exercises/remada-alta-halteres.gif');
-assert.equal(uprightRowAnimation.animatedGif, true);
-const uprightRowGif = fs.readFileSync(
-  'public/exercises/remada-alta-halteres.gif',
-);
-assert.equal(uprightRowGif.subarray(0, 6).toString(), 'GIF89a');
-assert(
-  fs
-    .readFileSync('dist/exercises/remada-alta-halteres.gif')
-    .equals(uprightRowGif),
 );
 assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
@@ -160,6 +109,12 @@ const legExtension = tracking.initialExercises.find(
 assert.equal(legExtension.category, 'Pernas');
 assert.equal(legExtension.equipment, 'Cadeira extensora');
 assert.equal(tracking.defaultLoadBasis(legExtension), 'kg indicado na máquina');
+const calfRaise = tracking.initialExercises.find(
+  (e) => e.id === 'panturrilha-sentada-maquina',
+);
+assert.equal(calfRaise.category, 'Pernas');
+assert.equal(calfRaise.equipment, 'Máquina de panturrilha sentada');
+assert.equal(tracking.defaultLoadBasis(calfRaise), 'kg adicional');
 const shrug = tracking.initialExercises.find(
   (e) => e.id === 'encolhimento-halteres',
 );

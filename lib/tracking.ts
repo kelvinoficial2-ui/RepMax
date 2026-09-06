@@ -123,6 +123,12 @@ export const initialExercises: Exercise[] = [
     category: 'Pernas',
   },
   {
+    id: 'panturrilha-sentada-maquina',
+    name: 'Panturrilha sentada na máquina',
+    equipment: 'Máquina de panturrilha sentada',
+    category: 'Pernas',
+  },
+  {
     id: 'rosca-concentrada-halteres',
     name: 'Rosca concentrada com halter',
     equipment: 'Halter',
@@ -138,6 +144,7 @@ export const initialExercises: Exercise[] = [
 export function defaultLoadBasis(exercise: Exercise) {
   if (exercise.id === 'crucifixo-polia-alta') return bases[1];
   if (exercise.id === 'supino-reto-barra') return bases[2];
+  if (exercise.id === 'panturrilha-sentada-maquina') return bases[4];
   return exercise.equipment.toLowerCase().includes('halter')
     ? bases[0]
     : bases[3];
