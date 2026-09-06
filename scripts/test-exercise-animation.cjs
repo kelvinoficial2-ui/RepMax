@@ -109,6 +109,18 @@ assert.equal(shrugGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
   fs.readFileSync('dist/exercises/encolhimento-halteres.gif').equals(shrugGif),
 );
+const uprightRowAnimation = animation.exerciseAnimation('remada-alta-halteres');
+assert.equal(uprightRowAnimation.src, '/exercises/remada-alta-halteres.gif');
+assert.equal(uprightRowAnimation.animatedGif, true);
+const uprightRowGif = fs.readFileSync(
+  'public/exercises/remada-alta-halteres.gif',
+);
+assert.equal(uprightRowGif.subarray(0, 6).toString(), 'GIF89a');
+assert(
+  fs
+    .readFileSync('dist/exercises/remada-alta-halteres.gif')
+    .equals(uprightRowGif),
+);
 assert.equal(crossoverGif.subarray(0, 6).toString(), 'GIF89a');
 assert(
   fs
@@ -154,6 +166,12 @@ const shrug = tracking.initialExercises.find(
 assert.equal(shrug.category, 'Costas');
 assert.equal(shrug.equipment, 'Halteres');
 assert.equal(tracking.defaultLoadBasis(shrug), 'kg por halter');
+const uprightRow = tracking.initialExercises.find(
+  (e) => e.id === 'remada-alta-halteres',
+);
+assert.equal(uprightRow.category, 'Ombros');
+assert.equal(uprightRow.equipment, 'Halteres');
+assert.equal(tracking.defaultLoadBasis(uprightRow), 'kg por halter');
 const crossover = tracking.initialExercises.find(
   (e) => e.id === 'crucifixo-polia-alta',
 );

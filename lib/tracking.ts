@@ -111,6 +111,12 @@ export const initialExercises: Exercise[] = [
     category: 'Ombros',
   },
   {
+    id: 'remada-alta-halteres',
+    name: 'Remada alta com halteres',
+    equipment: 'Halteres',
+    category: 'Ombros',
+  },
+  {
     id: 'cadeira-extensora',
     name: 'Cadeira extensora',
     equipment: 'Cadeira extensora',
