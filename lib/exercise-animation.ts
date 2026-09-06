@@ -27,12 +27,11 @@ const animations: Record<string, ExerciseAnimation> = {
     upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
   },
   'abdominal-polia-alta-em-pe': {
-    src: '/exercises/abdominal-polia-alta-em-pe-v2.jpg',
-    cellSize: 362,
-    columns: 4,
-    upwardPoses: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-    // Coordinates of the selected top plates inside each 362 px frame.
-    movingWeight: { x: 233, y: 254, width: 58, height: 23, maxLift: 42 },
+    src: '/exercises/abdominal-polia-alta-em-pe.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
   },
   'crucifixo-polia-alta': {
     src: '/exercises/crucifixo-polia-alta.gif',
