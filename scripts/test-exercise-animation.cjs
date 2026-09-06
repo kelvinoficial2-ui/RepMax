@@ -69,6 +69,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788659171/avatares/ROSCA_CONCENTRADA_COM_HALTERES.gif',
   'rosca-inversa-barra-reta':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661143/avatares/10_Best_Brachialis_Exercises_To_Build_Bigger_and_Stronger_Arms.gif',
+  'rosca-martelo-polia-baixa-corda':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788662624/avatares/Top_5_Must-Try_Cable_Biceps_Exercises_For_Size_And_Definition_2.gif',
 };
 for (const [id, src] of Object.entries(cloudinaryGifs)) {
   const definition = animation.exerciseAnimation(id);
@@ -118,6 +120,16 @@ assert.equal(reverseCurl.name, 'Rosca inversa em pé com barra reta');
 assert.equal(reverseCurl.category, 'Bíceps');
 assert.equal(reverseCurl.equipment, 'Barra reta');
 assert.equal(tracking.defaultLoadBasis(reverseCurl), 'kg total da barra');
+const cableHammerCurl = tracking.initialExercises.find(
+  (e) => e.id === 'rosca-martelo-polia-baixa-corda',
+);
+assert.equal(cableHammerCurl.name, 'Rosca martelo na polia baixa com corda');
+assert.equal(cableHammerCurl.category, 'Bíceps');
+assert.equal(cableHammerCurl.equipment, 'Polia baixa com corda');
+assert.equal(
+  tracking.defaultLoadBasis(cableHammerCurl),
+  'kg indicado na máquina',
+);
 const abdominal = tracking.initialExercises.find(
   (e) => e.id === 'abdominal-polia-alta-em-pe',
 );

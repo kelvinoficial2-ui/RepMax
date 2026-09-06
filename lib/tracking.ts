@@ -165,6 +165,12 @@ export const initialExercises: Exercise[] = [
     category: 'Bíceps',
   },
   {
+    id: 'rosca-martelo-polia-baixa-corda',
+    name: 'Rosca martelo na polia baixa com corda',
+    equipment: 'Polia baixa com corda',
+    category: 'Bíceps',
+  },
+  {
     id: 'abdominal-polia-alta-em-pe',
     name: 'Abdominal em pé na polia alta',
     equipment: 'Polia alta com corda',

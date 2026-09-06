@@ -55,6 +55,13 @@ const animations: Record<string, ExerciseAnimation> = {
     columns: 1,
     upwardPoses: [0],
   },
+  'rosca-martelo-polia-baixa-corda': {
+    src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788662624/avatares/Top_5_Must-Try_Cable_Biceps_Exercises_For_Size_And_Definition_2.gif',
+    animatedGif: true,
+    cellSize: 1,
+    columns: 1,
+    upwardPoses: [0],
+  },
   'cadeira-extensora': {
     src: 'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658720/avatares/CADEIRA_EXTENSORA.gif',
     animatedGif: true,
