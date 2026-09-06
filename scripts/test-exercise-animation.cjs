@@ -57,6 +57,8 @@ const cloudinaryGifs = {
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788662664/avatares/download_7.gif',
   'supino-inclinado':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788658719/avatares/SUPINO_INCLINADO_COM_ALTERES.gif',
+  'supino-inclinado-maquina-articulada':
+    'https://res.cloudinary.com/doo0fzoef/image/upload/v1788663569/avatares/Lever_Incline_Chest_Press_Overview___Form_Tips_Benefits_1.gif',
   'triceps-testa-inclinado-barra-w':
     'https://res.cloudinary.com/doo0fzoef/image/upload/v1788661228/avatares/How_To_Perform_The_Incline_EZ-Bar_Triceps_Extension.gif',
   'encolhimento-halteres':
@@ -95,6 +97,13 @@ assert.equal(flat.equipment, 'Halteres');
 assert.equal(flat.category, 'Peito');
 assert.equal(inclined.name, 'Supino inclinado com halteres');
 assert.equal(tracking.defaultLoadBasis(inclined), 'kg por halter');
+const leverInclinePress = tracking.initialExercises.find(
+  (e) => e.id === 'supino-inclinado-maquina-articulada',
+);
+assert.equal(leverInclinePress.name, 'Supino inclinado na máquina articulada');
+assert.equal(leverInclinePress.category, 'Peito');
+assert.equal(leverInclinePress.equipment, 'Máquina articulada com anilhas');
+assert.equal(tracking.defaultLoadBasis(leverInclinePress), 'kg por lado');
 const barbellBench = tracking.initialExercises.find(
   (e) => e.id === 'supino-reto-barra',
 );
